@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>Party Management | Edit Users</title>
+	<% include partials/css %>	
+</head>
+<body class="with-side-menu control-panel control-panel-compact">
+	<header class="site-header">
+		<% include partials/head %>	    
+	</header>
+	<div class="mobile-menu-left-overlay"></div>
+	<nav class="side-menu">
+		<% include partials/sidebar %>
+	</nav>
+	<div class="page-content">
+	   <div class="container-fluid">
+			<header class="section-header">
+				<div class="tbl">
+					<div class="tbl-row">
+						<div class="tbl-cell">
+							<h3>Edit user details</h3>
+							<ol class="breadcrumb breadcrumb-simple">
+								<li><a href="#">Home</a></li>
+								<li><a href="#">Manage Users</a></li>
+								<li class="active">Edit user details</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+			</header>
+			<div class="box-typical box-typical-padding">				
+				<form enctype="multipart/form-data" name="frmEditParty" method="post" action="/admin/EditAdminDetails">
+					<input type="text" class="form-control" name="id" id="id" placeholder="id" style="display:none" value="<%=_u._id%>" />
+					<div class="form-group row">
+						<label class="col-sm-2 form-control-label">Name</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" name="name" id="name" placeholder="Name" value="<%=_u.local.name%>" />
+						</div>
+					</div>															
+					<div class="form-group row">
+						<label class="col-sm-2 form-control-label">Username</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" name="username" id="username" placeholder="Username" value="<%=_u.local.username%>" />
+						</div>
+					</div>															
+					<div class="form-group row">
+						<label class="col-sm-2 form-control-label">Email</label>
+						<div class="col-sm-6">
+							<input type="Email" class="form-control" name="email" id="email" placeholder="Email" value="<%=_u.local.email%>" readonly />
+						</div>
+					</div>																				
+					<div class="form-group row">
+						<label class="col-sm-2 form-control-label">Profile Image</label>
+						<div class="col-sm-6">
+							<input type="file" name="filename" id="filename" />
+						</div>
+					</div>																				
+					<div class="form-group row">						
+						<div class="col-sm-8">
+							<button type="submit" id="btnSave" name="btnSave" class="btn btn-inline pull-right"><i class="fa fa-edit"></i> Edit</button>
+						</div>
+					</div>																											
+				</form>				
+			</div>
+		</div>
+	</div>	
+	<% include partials/js %>
+	<script>
+    $(function () {       
+        $("#startdate").datepicker({
+            format: "dd/mm/yyyy",
+            autoclose: true,
+            todayHighlight: true,
+            todayBtn: 'linked',
+            keyboardNavigation: true,
+        });
+
+        $("#enddate").datepicker({
+            format: "dd/mm/yyyy",
+            autoclose: true,
+            todayHighlight: true,
+            todayBtn: 'linked',
+            keyboardNavigation: true,
+        });        
+    })
+</script>
+</body>
+</html>

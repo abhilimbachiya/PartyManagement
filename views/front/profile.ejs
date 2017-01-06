@@ -1,0 +1,128 @@
+﻿<html>
+<head>
+  <title>Employee Management System</title>
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-filestyle/1.2.1/bootstrap-filestyle.min.js"></script>
+</head>
+<body>
+	<input type="hidden" id="userid" value="<%=user._id%>" />
+	<input type="hidden" id="useremail" value="<%=user.local.email%>" />
+	  <nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+		  <div class="navbar-header">
+			<a class="navbar-brand" href="/userhome">Employee Management System</a>
+		  </div>
+		  <ul class="nav navbar-nav">
+			<li class="active">          
+			</li>
+			<li class="dropdown"></li>
+		  </ul>
+		  <ul class="nav navbar-nav navbar-right">
+			<li class="dropdown">
+			  <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+				<strong style="color:#fff;">Welcome : </strong><%= user.local.username %> <span class="caret"></span>
+			  </a>
+			  <ul class="dropdown-menu">
+				<li>
+				  <a href="/profile">
+					<span class="glyphicon glyphicon-user"></span> Profile
+				  </a>
+				</li>				
+				<li>
+				  <a href="/logout">
+					<span class="glyphicon glyphicon-log-out"></span> Logout
+				  </a>
+				</li>            
+			  </ul>
+			</li>
+		  </ul>
+		</div>
+	  </nav>
+	<div class="container">
+		<div class="row">        			
+			<div class="col-sm-6">
+				<h4>Edti profile</h4>
+
+				<hr/>
+				<form id="frmEditProfile" action="/updateProfile" enctype="multipart/form-data" method="post" class="form-horizontal">
+					<input type="text" class="form-control" style="display:none;" name="id" id="id" value="<%=user._id%>" />
+					<div class="form-group">
+						<label class="control-label col-sm-4">username</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" name="username" value="<%=user.local.username%>" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-4">Firstname</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" name="firstname" value="<%=user.local.firstname%>" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-4">Lastname</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" name="lastname" value="<%=user.local.lastname%>" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-4">Email</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" name="email" value="<%=user.local.email%>" readonly />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-4">Contact</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" name="contact" value="<%=user.local.contact%>" id="contact" placeholder="Contact" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-4">City</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" name="city" id="city" value="<%=user.local.city%>" placeholder="City"  />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-4">Profile image</label>
+						<div class="col-sm-8">
+							<input type="file" name="filename" id="filename" class="filestyle" data-iconName="glyphicon glyphicon-inbox" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-4">Country</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" name="country" id="country" value="<%=user.local.country%>" placeholder="Country"  />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-12 text-right">							
+							<button type="submit" class="btn btn-warning btn-lg"><i class="fa fa-edit"></i> Edit profile</button>							
+						</div>
+					</div>
+					<input type="text" style="display:none" class="form-control" name="usertype" value="user" />
+					<input type="text" style="display:none" class="form-control" name="status" value="true" />
+				</form>				
+			</div>
+			<div class="col-sm-6">
+				<form id="frmDeleteProfile" action="/DeleteAccount" method="post" class="form-horizontal">
+					<div class="col-sm-12">
+						<div class="row">
+							<button type="submit" onclick="deleteAccount()" class="pull-right btn btn-danger btn-lg"><i class="fa fa-times-circle-o"></i> Delete this account</button>
+						</div>
+					</div>
+				</div>
+				<br/>
+				<img class="pull-right" src="<%=user.local.originalname%>" style="height:250px;margin-top:1%;" />
+			</div>
+		</div>
+	</div>
+	<script>
+		(function(){
+			$(":file").filestyle({iconName: "glyphicon-inbox"});			
+		})		
+	</script>	
+</body>
+</html>

@@ -1,0 +1,73 @@
+﻿<html>
+<head>
+  <title>Party Management | Manage parties</title>
+  <% include partials/css %>
+</head>
+<body class="with-side-menu-addl-full chrome-browser"> 
+	<header class="site-header">
+		<% include partials/head %>	    
+	</header>
+	<div class="mobile-menu-left-overlay"></div>
+	<nav class="side-menu">
+		<% include partials/sidebar %>
+	</nav>
+	<div class="page-content">
+		<div class="container-fluid">
+			<header class="section-header">
+				<div class="tbl">
+					<div class="tbl-row">
+						<div class="tbl-cell">
+							<h3>Manage users</h3>							
+							<ol class="breadcrumb breadcrumb-simple">
+								<li><a href="#">Home</a></li>
+								<li class="active">Manage users</li>								
+							</ol>
+							<div class="pull-right" style="margin-top:-6%;">
+								<a href="/admin/AddNewUser" class="btn btn-primary" ><i class="fa fa-plus"></i> Add new</a>
+							</div>
+						</div>
+					</div>
+				</div>				
+			</header>
+			<section class="card">
+				<div class="card-block">
+					<div id="example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+					<div class="row"><div class="col-sm-6"><div class="dataTables_length" id="example_length">
+					<label>Show <select name="example_length" aria-controls="example" class="form-control input-sm">
+					<option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div>
+					</div><div class="col-sm-6 text-right"><div id="example_filter" class="dataTables_filter">
+					<label>Search: <input type="search" class="form-control input-sm" placeholder="" aria-controls="example"></label>
+					</div></div></div>
+					<div class="row">
+					<div class="col-sm-12">
+					<table id="example" class="display table table-bordered dataTable dtr-inline" cellspacing="0" width="100%" role="grid" aria-describedby="example_info" style="width: 100%;margin-top:1%;">
+						<thead>
+						<tr role="row">
+							<th class="sorting">Name</th>
+							<th class="sorting_asc">Username</th>
+							<th class="sorting">Email</th>															
+							<th colspan="2" class="sorting text-center">Actions</th>
+						</tr>
+						</thead>						
+						<tbody>						
+							<% for(var i=0;i<_u.length;i++){%>
+								<tr>
+									<td><%=_u[i].local.name %></td>
+									<td><%=_u[i].local.username %></td>
+									<td><%=_u[i].local.email%></td>
+									<td class="text-center"><a href="/admin/editAdminInfo/<%=_u[i]._id %>" style="text-decoration:none !important;"><i class="fa fa-edit"></a></td>
+									<td class="text-center"><a href="/admin/deleteAdminInfo/<%=_u[i]._id %>" id="deleteThis_<%=_u[i]._id %>" data-id="<%=_u[i]._id %>" style="text-decoration:none !important;"><i class="fa fa-remove"></a></td>
+								</tr>
+							<%}%>
+						</tbody>
+					</table>
+					</div>
+					</div>					
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+	<% include partials/js %>
+</body>
+</html>

@@ -1,0 +1,65 @@
+﻿<html>
+<head>
+  <title>Party Management | Login</title>
+  <link rel="stylesheet" href="/assets/admin/css/separate/pages/login.min.css" />
+  <link rel="stylesheet" href="/assets/admin/css/lib/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="/assets/admin/css/lib/font-awesome/font-awesome.min.css" />
+  <link rel="stylesheet" href="/assets/admin/css/main.css" />
+</head>
+<body>
+  <div class="page-center">
+        <div class="page-center-in">
+            <div class="container-fluid">				
+                <form class="sign-box" action="/admin/login" method="post">					
+                    <div class="sign-avatar">
+                        <img src="/img/avatar-sign.png" alt="">
+                    </div>
+                    <header class="sign-title">Sign In</header>
+					<% if (message.length > 0) { %>
+						<div class="alert alert-danger"><%= message %></div>
+					<% } %>
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="E-Mail or Phone"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Password"/>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox float-left">
+                            <input type="checkbox" id="signed-in"/>
+                            <label for="signed-in">Keep me signed in</label>
+                        </div>
+                        <div class="float-right reset">
+                            <a href="javascript:;">Reset Password</a>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-rounded">Sign in</button>
+                    <p class="sign-note">New to our website? <a href="/admin/signup">Sign up</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+	<script src="/assets/admin/js/lib/jquery/jquery.min.js"></script>
+	<script src="/assets/admin/js/lib/tether/tether.min.js"></script>
+	<script src="/assets/admin/js/lib/bootstrap/bootstrap.min.js"></script>
+	<script src="/assets/admin/js/plugins.js"></script>
+	<script type="text/javascript" src="/assets/admin/js/lib/match-height/jquery.matchHeight.min.js"></script>
+	<script>
+        $(function() {
+            $('.page-center').matchHeight({
+                target: $('html')
+            });
+
+            $(window).resize(function(){
+                setTimeout(function(){
+                    $('.page-center').matchHeight({ remove: true });
+                    $('.page-center').matchHeight({
+                        target: $('html')
+                    });
+                },100);
+            });
+        });
+    </script>
+	<script src="/assets/admin/js/app.js"></script>
+</body>
+</html>

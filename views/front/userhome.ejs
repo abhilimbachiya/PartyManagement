@@ -1,0 +1,44 @@
+﻿<html>
+<head>
+  <title>Employee Management System | Sing Up</title>
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<input type="hidden" id="userid" value="<%=user._id%>" />
+	<input type="hidden" id="useremail" value="<%=user.local.email%>" />
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+		  <div class="navbar-header">
+			<a class="navbar-brand" href="/userhome">Employee Management System</a>
+		  </div>
+		  <ul class="nav navbar-nav">
+			<li class="active">          
+			</li>
+			<li class="dropdown"></li>
+		  </ul>
+		  <ul class="nav navbar-nav navbar-right">
+			<li class="dropdown">
+			  <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+				<strong style="color:#fff;">Welcome : </strong><%= user.local.username %> <span class="caret"></span>
+			  </a>
+			  <ul class="dropdown-menu">
+				<li>
+				  <a href="/profile">
+					<span class="glyphicon glyphicon-user"></span> Profile
+				  </a>
+				</li>
+				<li>
+				  <a href="/logout">
+					<span class="glyphicon glyphicon-log-out"></span> Logout
+				  </a>
+				</li>            
+			  </ul>
+			</li>
+		  </ul>
+		</div>
+	  </nav>  
+</body>
+</html>

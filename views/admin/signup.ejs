@@ -1,0 +1,60 @@
+﻿<html>
+<head>
+  <title>party Management | Sing Up</title>
+  <link rel="stylesheet" href="/assets/admin/css/separate/pages/login.min.css" />
+  <link rel="stylesheet" href="/assets/admin/css/lib/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="/assets/admin/css/lib/font-awesome/font-awesome.min.css" />
+  <link rel="stylesheet" href="/assets/admin/css/main.css" />
+</head>
+<body>
+  <div class="page-center">
+        <div class="page-center-in">
+            <div class="container-fluid">
+                <form class="sign-box" action="/admin/signup" method="post">
+                    <div class="sign-avatar no-photo">&plus;</div>
+                    <header class="sign-title">Sign Up</header>
+					
+					<div class="form-group">
+                        <input type="text" name="username" class="form-control" placeholder="Username"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="email" class="form-control" placeholder="E-mail"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" class="form-control" placeholder="Password"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" placeholder="Repeat password"/>
+                    </div>
+					<input type="text" style="display:none;" name="name" />
+					<input type="text" style="display:none;" name="profileimage" />                    
+                    <button type="submit" class="btn btn-rounded btn-success sign-up">Sign up</button>
+                    <p class="sign-note">Already have an account? <a href="/admin/">Sign in</a></p>                    
+                </form>
+            </div>
+        </div>
+  </div>
+  <script src="/assets/admin/js/lib/jquery/jquery.min.js"></script>
+	<script src="/assets/admin/js/lib/tether/tether.min.js"></script>
+	<script src="/assets/admin/js/lib/bootstrap/bootstrap.min.js"></script>
+	<script src="/assets/admin/js/plugins.js"></script>
+	<script type="text/javascript" src="/assets/admin/js/lib/match-height/jquery.matchHeight.min.js"></script>
+	<script>
+        $(function() {
+            $('.page-center').matchHeight({
+                target: $('html')
+            });
+
+            $(window).resize(function(){
+                setTimeout(function(){
+                    $('.page-center').matchHeight({ remove: true });
+                    $('.page-center').matchHeight({
+                        target: $('html')
+                    });
+                },100);
+            });
+        });
+    </script>
+	<script src="/assets/admin/js/app.js"></script>
+</body>
+</html>
