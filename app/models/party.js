@@ -1,16 +1,36 @@
-﻿var mongoose = require('mongoose');
+var mongoose = require('mongoose');
 
 var partySchema = mongoose.Schema({
-    parties: {
-        title: String,
-        description: String,
-        backgroundImagePath: String,
-        startdate: String,
-        enddate: String,
-        starttime: String,
-        endtime: String,
-        partylogopath: String,
-        location: String
-    },
+    user_id: String,
+    title: String,
+    description: String,
+    location: String,
+    latitude: String,
+    longitude: String,
+    contact_no: Number,
+    price: Number,
+    email: String,
+    website: String,
+    video_url: String,
+    facebook_url: String,
+    twitter_url: String,
+    youtube_url: String,
+    pinterest_url: String,
+    images: [{}],
+    startdate: String,
+    enddate: String,
+    starttime: String,
+    endtime: String,
+    price: Number,
+    duration: Number,
 });
-module.exports = mongoose.model('Parties', partySchema);
+
+partySchema.methods.getImageUrl = function getImageUrl ()
+{
+    if(this.images.length)
+        return '/' + this.images[0].destination + '/' + this.images[0].filename;
+
+    return '/assets/images/placeholders/any.png';
+};
+
+module.exports = mongoose.model('parties', partySchema);

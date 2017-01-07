@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+    <title>Sign Up</title>
+    <%- include('includes/head'); %>
+</head>
+
+<body class="nav-btn-only homepage">
+    <div class="page-wrapper">
+
+        <%- include('includes/header'); %>
+
+        <!--end page-header-->
+        <div class="modal modal-external fade in show" style="z-index: 0">
+            <div class="modal-dialog width-400px" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div class="section-title">
+                            <h2>Sign Up</h2>
+                        </div>
+                       <% if (message.length > 0) { %>
+              <div class="alert alert-danger"><%= message %></div>
+          <% } %>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form inputs-underline" action="/signup" method="POST">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" name="originalname" id="name" placeholder="Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Your email">
+                            </div>
+                            <!--end form-group-->
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" name="password" id="password" placeholder="Your password">
+                            </div>
+
+                            <input type="text" style="display:none" class="form-control" name="usertype" value="user" />
+                              <input type="text" style="display:none" class="form-control" name="status" value="true" />
+                              <input type="text" style="display:none" name="contact" placeholder="Contact" />
+                              <input type="text" style="display:none" name="city" placeholder="City"  />
+                              <input type="text" style="display:none" name="country" placeholder="Country"  />
+                              <input type="text" style="display:none" name="path" placeholder="path"  />
+                              <input type="text" style="display:none" name="originalname" placeholder="originalname"  />
+              
+                            <div class="form-group center">
+                                <button type="submit" class="btn btn-primary width-100">Sign Up</button>
+                            </div>
+                            <!--end form-group-->
+                        </form>
+
+                        <hr>
+
+                        <a href="/signin">Sign In</a>
+                        <!--end form-->
+                    </div>
+                    <!--end modal-body-->
+                </div>
+                <!--end modal-content-->
+            </div>
+            <!--end modal-dialog-->
+            <!--end page-footer-->
+        </div>
+        <!--end page-wrapper-->
+    </div>
+    <%- include('includes/foot'); %>
+
+</body>
+

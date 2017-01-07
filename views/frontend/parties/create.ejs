@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+    <title>Create Party</title>
+    <%- include('../includes/head'); %>
+</head>
+
+<body>
+
+<%- include('../includes/header'); %>
+
+<div id="page-content">
+        <div class="container">
+            <section class="page-title center">
+                <h1>Create a listing</h1>
+            </section>
+            <!--end page-title-->
+            
+            <%- include('form'); %>
+            
+        </div>
+        <!--end container-->
+    </div>
+    <!--end page-content-->
+<%- include('../includes/foot'); %>
+<script>
+    var _latitude = 40.7344458;
+    var _longitude = -73.86704922;
+    var element = "map-submit";
+    simpleMap(_latitude,_longitude, element, true);
+</script>
+
+</body>
+

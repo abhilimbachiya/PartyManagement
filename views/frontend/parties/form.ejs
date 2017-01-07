@@ -1,0 +1,524 @@
+<section>
+                <div class="row">
+                    <div class="col-md-8 col-sm-8 col-md-offset-2 col-sm-offset-2">
+                        <form class="form inputs-underline" enctype="multipart/form-data" method="POST">
+                            <section>
+                                <h3>About</h3>
+                                <div class="row">
+                                    <div class="col-md-9 col-sm-9">
+                                        <div class="form-group">
+                                            <label for="title">listing Title</label>
+                                            <input type="text" class="form-control" name="title" id="title" placeholder="Title" value="<%= party.title %>">
+                                        </div>
+                                        <!--end form-group-->
+                                    </div>
+                                    <!--end col-md-9-->
+                                    <div class="col-md-3 col-sm-3">
+                                        <div class="form-group">
+                                            <label for="category">Category</label>
+                                            <select class="form-control selectpicker" name="category" id="category">
+                                                <option value="">Indicas</option>
+                                                <option value="1">Sativas</option>
+                                                <option value="2">Blunts + Joints</option>
+                                                <option value="3">Edibles</option>
+                                                <option value="4">Vapes</option>
+                                                <option value="5">Extracts</option>
+                                            </select>
+                                        </div>
+                                        <!--end form-group-->
+                                    </div>
+                                    <!--col-md-3-->
+                                </div>
+                                <!--end row-->
+                                <div class="form-group">
+                                    <label for="description">Description</label>
+                                    <textarea class="form-control" id="description" rows="4" name="description" placeholder="Describe the listing"><%= party.description %></textarea>
+                                </div>
+                                <!--end form-group-->
+                                <div class="form-group">
+                                    <label for="tags">Tags</label>
+                                    <input type="text" class="form-control" name="tags" id="tags" placeholder="+ Add tag">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="price">Price</label>
+                                    <input type="number" class="form-control" name="price" id="price" placeholder="Price" value="<%= party.price %>">
+                                </div>
+                                <!--end form-group-->
+                            </section>
+                            <section>
+                                <h3>Contact</h3>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="address-autocomplete">Address</label>
+                                            <input type="text" class="form-control" name="location" id="address-autocomplete" placeholder="Address" value="<%= party.location %>">
+                                        </div>
+                                        <!--end form-group-->
+                                            <div class="map height-200px shadow" id="map-submit"></div>
+                                        <!--end map-->
+                                        <div class="form-group hidden">
+                                            <input type="text" class="form-control" id="latitude" name="latitude" hidden="<%= party.latitude %>">
+                                            <input type="text" class="form-control" id="longitude" name="longitude" hidden="<%= party.longitude %>">
+                                        </div>
+                                        <p class="note">Enter the exact address or drag the map marker to position</p>
+                                    </div>
+                                    <!--end col-md-6-->
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="region">Listing Region</label>
+                                            <select class="form-control selectpicker" name="region" id="region">
+                                                <option value="">Select Region</option>
+                                                <option value="1">Los Angeles</option>
+                                                <option value="2">San Diego</option>
+                                                <option value="3">San Fransisco</option>
+                                                <option value="4">Washington</option>
+                                            </select>
+                                        </div>
+                                        <!--end form-group-->
+                                        <div class="form-group">
+                                            <label for="phone">Host Phone</label>
+                                            <input type="text" class="form-control" name="contact_no" id="phone" placeholder="Phone number" value="<%= party.contact_no %>">
+                                        </div>
+                                        <!--end form-group-->
+                                        <div class="form-group">
+                                            <label for="email">Host Email</label>
+                                            <input type="email" class="form-control" name="email" id="email" placeholder="hello@example.com" value="<%= party.email %>">
+                                        </div>
+                                        <!--end form-group-->
+                                        <div class="form-group">
+                                            <label for="website">Host Website / Social media</label>
+                                            <input type="text" class="form-control" name="website" id="website" placeholder="http://" value="<%= party.website %>">
+                                        </div>
+                                        <!--end form-group-->
+                                    </div>
+                                    <!--end col-md-6-->
+                                </div>
+                            </section>
+                            <section>
+                                <h3>Gallery</h3>
+                                <div class="file-upload-previews"></div>
+                                <div class="file-upload">
+                                    <input type="file" name="images[]" class="file-upload-input with-preview" multiple title="Click to add files" maxlength="10" accept="gif|jpg|png">
+                                    <span>Click or drag images here</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="video">Video URL</label>
+                                    <input type="text" class="form-control" name="video_url" id="video" placeholder="http://" value="<%= party.video_url %>">
+                                </div>
+                                <!--end form-group-->
+                            </section>
+                            <section>
+                                <h3>Social</h3>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="facebook">Facebook URL</label>
+                                            <input type="text" class="form-control" name="facebook_url" id="facebook" placeholder="http://" value="<%= party.facebook_url %>">
+                                        </div>
+                                        <!--end form-group-->
+                                        <div class="form-group">
+                                            <label for="youtube">Youtube URL</label>
+                                            <input type="text" class="form-control" name="youtube_url" id="youtube" placeholder="http://" value="<%= party.youtube_url %>">
+                                        </div>
+                                        <!--end form-group-->
+                                    </div>
+                                    <!--end col-md-6-->
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="twitter">Twitter URL</label>
+                                            <input type="text" class="form-control" name="twitter_url" id="twitter" placeholder="http://" value="<%= party.twitter_url %>">
+                                        </div>
+                                        <!--end form-group-->
+                                        <div class="form-group">
+                                            <label for="pinterest">Pinterest URL</label>
+                                            <input type="text" class="form-control" name="pinterest_url" id="pinterest" placeholder="http://" value="<%= party.pinterest_url %>">
+                                        </div>
+                                        <!--end form-group-->
+                                    </div>
+                                    <!--end col-md-6-->
+                                </div>
+                                <!--end row-->
+                            </section>
+                            <section>
+                                <h3>Opening Hours<span class="note">(optional)</span></h3>
+                                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="accordion-heading-1">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#accordion-collapse-1" aria-expanded="false" aria-controls="accordion-collapse-1">
+                                                    <i class="fa fa-clock-o"></i>Add opening hours
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <!--end panel-heading-->
+                                        <div id="accordion-collapse-1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="accordion-heading-1">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <div class="col-md-4 col-sm-4 horizontal-input-title">
+                                                        <strong>Monday</strong>
+                                                    </div>
+                                                    <!--end col-md-4-->
+                                                    <div class="col-md-4 col-sm-4">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" name="open_hours[]" placeholder="Open">
+                                                        </div>
+                                                        <!--end form-group-->
+                                                    </div>
+                                                    <!--end col-md-4-->
+                                                    <div class="col-md-4 col-sm-4">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" name="close_hours[]" placeholder="Close">
+                                                        </div>
+                                                        <!--end form-group-->
+                                                    </div>
+                                                    <!--end col-md-4-->
+                                                </div>
+                                                <!--end row-->
+                                                <div class="row">
+                                                    <div class="col-md-4 col-sm-4 horizontal-input-title">
+                                                        <strong>Tuesday</strong>
+                                                    </div>
+                                                    <!--end col-md-4-->
+                                                    <div class="col-md-4 col-sm-4">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" name="open_hours[]" placeholder="Open">
+                                                        </div>
+                                                        <!--end form-group-->
+                                                    </div>
+                                                    <!--end col-md-4-->
+                                                    <div class="col-md-4 col-sm-4">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" name="close_hours[]" placeholder="Close">
+                                                        </div>
+                                                        <!--end form-group-->
+                                                    </div>
+                                                    <!--end col-md-4-->
+                                                </div>
+                                                <!--end row-->
+                                                <div class="row">
+                                                    <div class="col-md-4 col-sm-4 horizontal-input-title">
+                                                        <strong>Wednesday</strong>
+                                                    </div>
+                                                    <!--end col-md-4-->
+                                                    <div class="col-md-4 col-sm-4">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" name="open_hours[]" placeholder="Open">
+                                                        </div>
+                                                        <!--end form-group-->
+                                                    </div>
+                                                    <!--end col-md-4-->
+                                                    <div class="col-md-4 col-sm-4">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" name="close_hours[]" placeholder="Close">
+                                                        </div>
+                                                        <!--end form-group-->
+                                                    </div>
+                                                    <!--end col-md-4-->
+                                                </div>
+                                                <!--end row-->
+                                                <div class="row">
+                                                    <div class="col-md-4 col-sm-4 horizontal-input-title">
+                                                        <strong>Thursday</strong>
+                                                    </div>
+                                                    <!--end col-md-4-->
+                                                    <div class="col-md-4 col-sm-4">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" name="open_hours[]" placeholder="Open">
+                                                        </div>
+                                                        <!--end form-group-->
+                                                    </div>
+                                                    <!--end col-md-4-->
+                                                    <div class="col-md-4 col-sm-4">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" name="close_hours[]" placeholder="Close">
+                                                        </div>
+                                                        <!--end form-group-->
+                                                    </div>
+                                                    <!--end col-md-4-->
+                                                </div>
+                                                <!--end row-->
+                                                <div class="row">
+                                                    <div class="col-md-4 col-sm-4 horizontal-input-title">
+                                                        <strong>Friday</strong>
+                                                    </div>
+                                                    <!--end col-md-4-->
+                                                    <div class="col-md-4 col-sm-4">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" name="open_hours[]" placeholder="Open">
+                                                        </div>
+                                                        <!--end form-group-->
+                                                    </div>
+                                                    <!--end col-md-4-->
+                                                    <div class="col-md-4 col-sm-4">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" name="close_hours[]" placeholder="Close">
+                                                        </div>
+                                                        <!--end form-group-->
+                                                    </div>
+                                                    <!--end col-md-4-->
+                                                </div>
+                                                <!--end row-->
+                                                <div class="row">
+                                                    <div class="col-md-4 col-sm-4 horizontal-input-title">
+                                                        <strong>Saturday</strong>
+                                                    </div>
+                                                    <!--end col-md-4-->
+                                                    <div class="col-md-4 col-sm-4">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" name="open_hours[]" placeholder="Open">
+                                                        </div>
+                                                        <!--end form-group-->
+                                                    </div>
+                                                    <!--end col-md-4-->
+                                                    <div class="col-md-4 col-sm-4">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" name="close_hours[]" placeholder="Close">
+                                                        </div>
+                                                        <!--end form-group-->
+                                                    </div>
+                                                    <!--end col-md-4-->
+                                                </div>
+                                                <!--end row-->
+                                                <div class="row">
+                                                    <div class="col-md-4 col-sm-4 horizontal-input-title">
+                                                        <strong>Sunday</strong>
+                                                    </div>
+                                                    <!--end col-md-4-->
+                                                    <div class="col-md-4 col-sm-4">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" name="open_hours[]" placeholder="Open">
+                                                        </div>
+                                                        <!--end form-group-->
+                                                    </div>
+                                                    <!--end col-md-4-->
+                                                    <div class="col-md-4 col-sm-4">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" name="close_hours[]" placeholder="Close">
+                                                        </div>
+                                                        <!--end form-group-->
+                                                    </div>
+                                                    <!--end col-md-4-->
+                                                </div>
+                                                <!--end row-->
+                                            </div>
+                                        </div>
+                                        <!--end panel-collapse-->
+                                    </div>
+                                    <!--end panel-->
+                                </div>
+                                <!--end panel-group-->
+                            </section>
+                            <section>
+                                <h3>lisitng Menu<span class="note">(optional)</span></h3>
+                                <div class="panel-group" id="accordion-2" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="accordion-heading-2">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion-2" href="#accordion-collapse-2" aria-expanded="false" aria-controls="accordion-collapse-2">
+                                                    <i class="fa fa-cutlery"></i>Add Smoking menu
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <!--end panel-heading-->
+                                        <div id="accordion-collapse-2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="accordion-heading-2">
+                                            <div class="panel-body">
+                                                <div class="wrapper">
+                                                    <div class="row">
+                                                        <div class="col-md-3 col-sm-3"><strong>Title </strong><span class="note">(Optional)</span></div>
+                                                        <div class="col-md-6 col-sm-6"><strong>Description</strong></div>
+                                                        <div class="col-md-3 col-sm-3"><strong>Meal Type</strong></div>
+                                                    </div>
+                                                    <!--end row-->
+                                                    <div class="row">
+                                                        <div class="col-md-3 col-sm-3">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" name="menu_title[]" placeholder="Title">
+                                                            </div>
+                                                            <!--end form-group-->
+                                                        </div>
+                                                        <!--end col-sm-3-->
+                                                        <div class="col-md-6 col-sm-6">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" name="menu_description[]" placeholder="Description">
+                                                            </div>
+                                                            <!--end form-group-->
+                                                        </div>
+                                                        <!--end col-sm-6-->
+                                                        <div class="col-md-3 col-sm-3">
+                                                            <div class="form-group">
+                                                                <select class="form-control selectpicker" name="menu_type[]">
+                                                                    <option value="">Select meal type</option>
+                                                                    <option value="1">Starter</option>
+                                                                    <option value="2">Soup</option>
+                                                                    <option value="3">Main Course</option>
+                                                                    <option value="4">Desert</option>
+                                                                </select>
+                                                            </div>
+                                                            <!--end form-group-->
+                                                        </div>
+                                                        <!--end col-sm-3-->
+                                                    </div>
+                                                    <!--end row-->
+                                                    <div class="row">
+                                                        <div class="col-md-3 col-sm-3">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" name="menu_title[]" placeholder="Title">
+                                                            </div>
+                                                            <!--end form-group-->
+                                                        </div>
+                                                        <!--end col-sm-3-->
+                                                        <div class="col-md-6 col-sm-6">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" name="menu_description" placeholder="Description">
+                                                            </div>
+                                                            <!--end form-group-->
+                                                        </div>
+                                                        <!--end col-sm-6-->
+                                                        <div class="col-md-3 col-sm-3">
+                                                            <div class="form-group">
+                                                                <select class="form-control selectpicker" name="menu_type[]">
+                                                                    <option value="">Select meal type</option>
+                                                                    <option value="1">Starter</option>
+                                                                    <option value="2">Soup</option>
+                                                                    <option value="3">Main Course</option>
+                                                                    <option value="4">Desert</option>
+                                                                </select>
+                                                            </div>
+                                                            <!--end form-group-->
+                                                        </div>
+                                                        <!--end col-sm-3-->
+                                                    </div>
+                                                    <!--end row-->
+                                                    <div class="row" id="duplicate-meal">
+                                                        <div class="col-md-3 col-sm-3">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" name="menu_title[]" placeholder="Title">
+                                                            </div>
+                                                            <!--end form-group-->
+                                                        </div>
+                                                        <!--end col-sm-3-->
+                                                        <div class="col-md-6 col-sm-6">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" name="menu_description" placeholder="Description">
+                                                            </div>
+                                                            <!--end form-group-->
+                                                        </div>
+                                                        <!--end col-sm-6-->
+                                                        <div class="col-md-3 col-sm-3">
+                                                            <div class="form-group">
+                                                                <select class="form-control selectpicker" name="menu_type[]">
+                                                                    <option value="">Select meal type</option>
+                                                                    <option value="1">Starter</option>
+                                                                    <option value="2">Soup</option>
+                                                                    <option value="3">Main Course</option>
+                                                                    <option value="4">Desert</option>
+                                                                </select>
+                                                            </div>
+                                                            <!--end form-group-->
+                                                        </div>
+                                                        <!--end col-sm-3-->
+                                                    </div>
+                                                    <!--end row-->
+                                                </div>
+                                                <!--end wrapper-->
+                                                <div class="center"><a href="#duplicate-meal" class="btn btn-rounded btn-primary btn-framed btn-light-frame btn-xs icon duplicate"><i class="fa fa-plus"></i>Add another meal</a></div>
+                                            </div>
+                                            <!--end panel-body-->
+                                        </div>
+                                        <!--end panel-collapse-->
+                                    </div>
+                                    <!--end panel-->
+                                </div>
+                                <!--end panel-group-->
+                            </section>
+                            <section>
+                                <h3>Schedule<span class="note">(optional)</span></h3>
+                                <div class="panel-group" id="accordion-3" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="accordion-heading-3">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion-3" href="#accordion-collapse-3" aria-expanded="false" aria-controls="accordion-collapse-3">
+                                                    <i class="fa fa-calendar"></i>Add schedule plan
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <!--end panel-heading-->
+                                        <div id="accordion-collapse-3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="accordion-heading-3">
+                                            <div class="panel-body">
+                                                <div class="wrapper">
+                                                    <div class="row">
+                                                        <div class="col-md-2 col-sm-3">
+                                                            <strong>Date</strong>
+                                                        </div>
+                                                        <!--end col-md-2-->
+                                                        <div class="col-md-2 col-sm-3">
+                                                            <strong>Time</strong>
+                                                        </div>
+                                                        <!--end col-md-2-->
+                                                        <div class="col-md-4 col-sm-3">
+                                                            <strong>Place</strong>
+                                                        </div>
+                                                        <!--end col-md-3-->
+                                                        <div class="col-md-4 col-sm-3">
+                                                            <strong>Address</strong>
+                                                        </div>
+                                                        <!--end col-md-4-->
+                                                    </div>
+                                                    <div class="row" id="duplicate-schedule">
+                                                        <div class="col-md-2 col-sm-3">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" name="schedule_date[]" placeholder="Date">
+                                                            </div>
+                                                            <!--end form-group-->
+                                                        </div>
+                                                        <!--end col-md-2-->
+                                                        <div class="col-md-2 col-sm-3">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" name="schedule_time[]" placeholder="Time">
+                                                            </div>
+                                                            <!--end form-group-->
+                                                        </div>
+                                                        <!--end col-md-2-->
+                                                        <div class="col-md-4 col-sm-3">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" name="schedule_place[]" placeholder="Place">
+                                                            </div>
+                                                            <!--end form-group-->
+                                                        </div>
+                                                        <!--end col-md-3-->
+                                                        <div class="col-md-4 col-sm-3">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" name="schedule_address[]" placeholder="Address">
+                                                            </div>
+                                                            <!--end form-group-->
+                                                        </div>
+                                                        <!--end col-md-4-->
+                                                    </div>
+                                                    <!--end row-->
+                                                </div>
+                                                <!--end wrapper-->
+                                                <div class="center"><a href="#duplicate-schedule" class="btn btn-rounded btn-primary btn-framed btn-light-frame btn-xs icon duplicate"><i class="fa fa-plus"></i>Add another schedule item</a></div>
+                                            </div>
+                                            <!--end panel-body-->
+                                        </div>
+                                        <!--end panel-collapse-->
+                                    </div>
+                                    <!--end panel-->
+                                </div>
+                                <!--end panel-group-->
+                            </section>
+                            <hr>
+                            <section class="center">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-rounded">Submit Listing</button>
+                                </div>
+                                <!--end form-group-->
+                            </section>
+                        </form>
+                        <!--end form-->
+                    </div>
+                    <!--end col-md-6-->
+                </div>
+                <!--end row-->
+            </section>

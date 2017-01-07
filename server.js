@@ -13,22 +13,16 @@ var path = require('path');                                                     
 var multer = require('multer');                                                             //for disk storage management
 
 var configDb = require('./config/database.js');                                             // include db file connection
-var port = process.env.port || 5858;                                                        //Initialize port for currently running application
+var port = process.env.port || 5959;                                                        //Initialize port for currently running application
 mongoos.connect(configDb.url);                                                              // connect mongo db using mongoose
-app.set('view engine', 'ejs'); 
-app.use(express.static(path.join("admin", './views')));
-app.use(express.static('public'));
-app.use(express.static('./Uploads'));
-app.use(express.static('./views/admin/partials'));
-app.use(express.static('/admin/public'));
+app.set('view engine', 'ejs');                                                              // Set view engine for view layout using express framework
 app.use(morgan('dev'));                                                                     // Make in use morgan for logger
 app.use(cookieparser());                                                                    // To save user data in cookie
 app.use(bodyparser.json());                                                                 //To get form data using body parser
 app.use(bodyparser.urlencoded({ extended: true }));                                         // to encode content of form body
 
-//Use static directories start
-require('./app/Requires');
-//Use static directories end
+app.use(express.static('public'));
+app.use('/public', express.static('public'));
 
 app.use(session({                                                                           // Use the session for user data
     secret: "welcometopartymanagementsystembynodejs",                                       //Secreat of user key

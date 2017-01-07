@@ -1,0 +1,115 @@
+<header id="page-header">
+        <nav>
+            <div class="left">
+                <a href="/" class="brand"><img src="/assets/img/logo.png" alt=""></a>
+            </div>
+            <!--end left-->
+            <div class="right">
+                <div class="primary-nav has-mega-menu">
+                    <ul class="navigation">
+
+                        <li class="mega-menu-parent has-child"><a href="#nav-pages">Home</a>
+                            <div class="wrapper">
+                                <div class="mega-menu">
+                                    <div class="nav-wrapper" id="nav-pages">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-md-3 col-sm-3">
+                                                    <h4 class="heading">listings</h4>
+                                                    <ul>
+
+                                                        <li><a href="#">Sign In</a></li>
+                                                        <li><a href="#">Register</a></li>
+                                                        <li><a href="#">Reset Password</a></li>
+                                                        <li><a href="#">Create listing</a></li>
+                                                      
+                                                    </ul>
+                                                </div>
+                                                <!--end col-md-3-->
+                                                <div class="col-md-3 col-sm-3">
+                                                    <h4 class="heading">User</h4>
+                                                    <ul>
+                                                        <li><a href="#">Profile Edit</a></li>
+                                                      
+                                                        <li><a href="#">My Listings</a></li>
+                                                        <li><a href="#">Edit Listing</a></li>
+                                                        <li><a href="#">Reviews</a></li>
+                                                    </ul>
+                                                </div>
+                                                <!--end col-md-3-->
+                                                <div class="col-md-3 col-sm-3">
+                                                    <h4 class="heading">More</h4>
+                                                    <ul>
+                                                        
+                                                        <li><a href="#">404 Error Page</a></li>
+                                                        <li><a href="#">Faq</a></li>
+                                                        <li><a href="#">Terms & Conditions</a></li>   
+                                                        <li><a href="#">How listing Works</a></li>
+                                                        <li><a href="#">RTL Support</a></li>
+                                                    </ul>
+                                                </div>
+                                                <!--end col-md-3-->
+                                                <div class="col-md-3 col-sm-3">
+                                                    <!-- <div class="image center overlay">
+                                                        <div class="vertical-aligned-elements">
+                                                            <div class="element">
+                                                                <a href="#" class="btn btn-default btn-framed">Submit Your Listing</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="bg-transfer"><img src="/assets/img/items/10.jpg" alt=""></div>
+                                                    </div> -->
+                                                </div>
+                                                <!--end col-md-3-->
+                                            </div>
+                                            <!--end row-->
+                                        </div>
+                                        <!--end container-->
+                                    </div>
+                                    <!--end collapse-->
+                                </div>
+                                <!--end wrapper-->
+                            </div>
+                            <!--end mega-menu-->
+                        </li>
+                        
+                    
+                    </ul>
+                    <!--end navigation-->
+                </div>
+                <!--end primary-nav-->
+                
+                <!--end secondary-nav-->
+                <% if (user) { %>
+                 <div class="secondary-nav">
+                    <ul class="navigation">
+                        <li class="has-child">
+                            <div class="image"><div class="bg-transfer"><img src="/assets/img/items/snoop.jpg" alt=""></div></div>
+                            <a href="#" class="invisible-on-mobile"><%= user.local.email %></a>
+                            <div class="wrapper">
+                                <div class="nav-wrapper">
+                                    <ul>
+                                        <li><a href="profile.html"><i class="fa fa-user"></i>View Profile</a></li>
+                                        <li><a href="/parties"><i class="fa fa-user"></i>My Parties</a></li>
+                                        <li><a href="/settings"><i class="fa fa-user"></i>Settings</a></li>
+                                        <li><a href="/signout"><i class="fa fa-sign-out"></i>Log Out</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <a href="/parties/create" class="btn btn-primary btn-small btn-rounded icon shadow add-listing"><i class="fa fa-plus"></i><span>Add listing</span></a>
+                <% } else { %>
+                <div class="secondary-nav">
+                    <a href="/signin">Sign In</a>
+                    <a href="/signup">Register</a>
+                </div>
+                <% } %>
+                <!--end nav-btn-->
+            </div>
+            <!--end right-->
+        </nav>
+        <!--end nav-->
+    </header>
+    <ul class="breadcrumb">
+    </ul>

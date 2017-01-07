@@ -23,7 +23,7 @@
 								<li class="active">Manage Parties</li>								
 							</ol>
 							<div class="pull-right" style="margin-top:-6%;">
-								<a href="/admin/AddNewParty" class="btn btn-primary" ><i class="fa fa-plus"></i> Add new</a>
+								<a style="display:none !important" href="/admin/AddNewParty" class="btn btn-primary" ><i class="fa fa-plus"></i> Add new</a>
 							</div>
 						</div>
 					</div>
@@ -44,23 +44,22 @@
 						<thead>
 						<tr role="row">
 							<th class="sorting_asc">Title</th>
-							<th class="sorting">Description</th>
-							<th class="sorting">Start date</th>
-							<th class="sorting">End date</th>
-							<th class="sorting">Start / End time</th>
-							<th class="sorting">Location</th>							
+							<th class="sorting_asc">Image</th>
+							<th class="sorting">Duration(Hours)</th>
+							<th class="sorting">Price($)</th>
+							<th class="sorting">Location</th>
 							<th colspan="2" class="sorting text-center">Actions</th>
 						</tr>
 						</thead>						
 						<tbody>						
 							<% for(var i=0;i<_p.length;i++){%>
 								<tr>
-									<td><%=_p[i].parties.title %></td>
-									<td><%=_p[i].parties.description %></td>
-									<td><%=_p[i].parties.startdate %></td>
-									<td><%=_p[i].parties.enddate %></td>
-									<td><%=_p[i].parties.starttime %> / <%=_p[i].parties.endtime %></td>
-									<td><%=_p[i].parties.location %></td>
+									<td><%=_p[i].title %></td>
+									<td><img src="<%=_p[i].getImageUrl() %>" height="50"></td>
+									<!--<td><%=_p[i].starttime %> / <%=_p[i].endtime %></td>-->
+									<td><%=_p[i].duration %></td>
+									<td><%=_p[i].price %></td>
+									<td><%=_p[i].location %></td>
 									<td class="text-center"><a href="/admin/editPartyInfo/<%=_p[i]._id %>" style="text-decoration:none !important;"><i class="fa fa-edit"></a></td>
 									<td class="text-center"><a href="/admin/deletePartyInfo/<%=_p[i]._id %>" id="deleteThis_<%=_p[i]._id %>" data-id="<%=_p[i]._id %>" style="text-decoration:none !important;"><i class="fa fa-remove"></a></td>
 								</tr>

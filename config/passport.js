@@ -1,5 +1,5 @@
 ﻿var LocalStrategy = require('passport-local').Strategy;
-var Admin = require('../app/models/admins');
+var User = require('../app/models/user');
 
 module.exports = function (passport) {
     passport.serializeUser(function (user, done) {
@@ -7,7 +7,7 @@ module.exports = function (passport) {
     });
 
     passport.deserializeUser(function (id, done) {
-        Admin.findById(id, function (err, user) {
+        User.findById(id, function (err, user) {
             done(err, user);
         });
     });        
@@ -19,19 +19,26 @@ module.exports = function (passport) {
         passReqToCallback: true
     }, function (req, email, password, done) {
         process.nextTick(function () {
-            Admin.findOne({ 'local.email': email }, function (err, user) {
+            User.findOne({ 'local.email': email }, function (err, user) {
                 if (err)
                     return done(err);
                 if (user != null) {
                     return done(null, false, req.flash('signupMessage', 'Email is already taken!'));
                 }
                 else {
-                    var newUser = new Admin();
+                    var newUser = new User();
                     newUser.local.email = email;
                     newUser.local.password = newUser.generateHash(password);
+                    newUser.local.usertype = req.body.usertype;
+                    newUser.local.status = req.body.status;
                     newUser.local.username = req.body.username;
-                    newUser.local.name = req.body.name;
-                    newUser.local.profileimage = "";
+                    newUser.local.firstname = req.body.firstname;
+                    newUser.local.lastname = req.body.lastname;
+                    newUser.local.contact = req.body.contact;
+                    newUser.local.city = req.body.city;
+                    newUser.local.country = req.body.country;
+                    newUser.local.path = "";
+                    newUser.local.originalname = "";
                     newUser.save(function (err) {
                         if (err)
                             throw err;
@@ -48,7 +55,7 @@ module.exports = function (passport) {
         passwordField: 'password',
         passReqToCallback: true
     }, function (req, email, password, done) {
-        Admin.findOne({ 'local.email': email }, function (err, user) {
+        User.findOne({ 'local.email': email }, function (err, user) {
             if (err)
                 return done(err);
             if (!user) {

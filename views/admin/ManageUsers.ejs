@@ -55,8 +55,8 @@
 									<td><%=_u[i].local.name %></td>
 									<td><%=_u[i].local.username %></td>
 									<td><%=_u[i].local.email%></td>
-									<td class="text-center"><a href="/admin/editAdminInfo/<%=_u[i]._id %>" style="text-decoration:none !important;"><i class="fa fa-edit"></a></td>
-									<td class="text-center"><a href="/admin/deleteAdminInfo/<%=_u[i]._id %>" id="deleteThis_<%=_u[i]._id %>" data-id="<%=_u[i]._id %>" style="text-decoration:none !important;"><i class="fa fa-remove"></a></td>
+									<td class="text-center"><a href="/admin/EditUserInfo/<%=_u[i]._id %>" style="text-decoration:none !important;"><i class="fa fa-edit"></a></td>
+									<td class="text-center"><a href="/admin/DeleteUserInfo/<%=_u[i]._id %>" id="deleteThis_<%=_u[i]._id %>" data-id="<%=_u[i]._id %>" style="text-decoration:none !important;"><i class="fa fa-remove"></a></td>
 								</tr>
 							<%}%>
 						</tbody>

@@ -37,60 +37,108 @@
 					<div class="form-group row">
 						<label class="col-sm-2 form-control-label">Title</label>
 						<div class="col-sm-6">
-							<input type="text" class="form-control" name="title" id="title" placeholder="Title" value="<%=_p.parties.title%>" />
+							<input type="text" class="form-control" name="title" id="title" placeholder="Title" value="<%=_p.title%>" />
 						</div>
 					</div>															
 					<div class="form-group row">
 						<label class="col-sm-2 form-control-label">Description</label>
 						<div class="col-sm-6">
-							<textarea class="form-control" name="description" rows="3" placeholder="Write about of your event..."><%=_p.parties.description%>
-							</textarea>
+							<textarea class="form-control" name="description" rows="3" placeholder="Write about of your event..."><%=_p.description%></textarea>
 						</div>
-					</div>															
+					</div>						
 					<div class="form-group row">
-						<label class="col-sm-2 form-control-label">Party Image</label>
+						<label class="col-sm-2 form-control-label">Location</label>
 						<div class="col-sm-6">
-							<input type="file" name="filename" id="filename" />
-						</div>						
-					</div>															
+							<input type="text" name="location" class="form-control" id="location" onblur="codeAddress()" placeholder="Location" value="<%=_p.location%>" />
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 form-control-label">Contact no</label>
+						<div class="col-sm-6">
+							<input type="text" name="contact_no" class="form-control" id="contact_no" placeholder="Contact no" value="<%=_p.contact_no%>" />
+						</div>
+					</div>											
+					<div class="form-group row">
+						<label class="col-sm-2 form-control-label">Email</label>
+						<div class="col-sm-6">
+							<input type="text" name="email" class="form-control" id="email" placeholder="Email" value="<%=_p.email%>" />
+						</div>
+					</div>												
+					<div class="form-group row">
+						<label class="col-sm-2 form-control-label">Website</label>
+						<div class="col-sm-6">
+							<input type="text" name="website" class="form-control" id="website" placeholder="Website" value="<%=_p.website%>" />
+						</div>
+					</div>						
+					<div class="form-group row">
+						<label class="col-sm-2 form-control-label">Video URL</label>
+						<div class="col-sm-6">
+							<input type="text" name="video_url" class="form-control" id="video_url" placeholder="Any video url" value="<%=_p.video_url%>" />
+						</div>
+					</div>	
+					<div class="form-group row">
+						<label class="col-sm-2 form-control-label">Facebook URL</label>
+						<div class="col-sm-6">
+							<input type="text" name="facebook_url" class="form-control" id="facebook_url" placeholder="Facebool URL" value="<%=_p.facebook_url%>" />
+						</div>
+					</div>														
+					<div class="form-group row">
+						<label class="col-sm-2 form-control-label">Twitter URL</label>
+						<div class="col-sm-6">
+							<input type="text" name="twitter_url" class="form-control" id="twitter_url" placeholder="Twitter URL" value="<%=_p.twitter_url%>" />
+						</div>
+					</div>																				
+					<div class="form-group row">
+						<label class="col-sm-2 form-control-label">Youtube URL</label>
+						<div class="col-sm-6">
+							<input type="text" name="youtube_url" class="form-control" id="youtube_url" placeholder="Youtube URL" value="<%=_p.youtube_url%>" />
+						</div>
+					</div>										
+					<div class="form-group row">
+						<label class="col-sm-2 form-control-label">Pinterest URL</label>
+						<div class="col-sm-6">
+							<input type="text" name="pinterest_url" class="form-control" id="pinterest_url" placeholder="Pinterest URL" value="<%=_p.pinterest_url%>" />
+						</div>
+					</div>													
 					<div class="form-group row">
 						<label class="col-sm-2 form-control-label">Start date</label>
 						<div class="col-sm-6">
-							<input type="text" name="startdate" class="form-control" id="startdate" placeholder="Start date" readonly value="<%=_p.parties.startdate%>" />
+							<input type="text" name="startdate" class="form-control" id="startdate" placeholder="Start date" readonly value="<%=_p.startdate%>" />
 						</div>
 					</div>															
 					<div class="form-group row">
 						<label class="col-sm-2 form-control-label">End date</label>
 						<div class="col-sm-6">
-							<input type="text" name="enddate" class="form-control" readonly id="enddate" placeholder="End date" value="<%=_p.parties.enddate%>">
+							<input type="text" name="enddate" class="form-control" readonly id="enddate" placeholder="End date" value="<%=_p.enddate%>" />
 						</div>
 					</div>															
-					<div class="form-group row">
+					<!--<div class="form-group row">
 						<label class="col-sm-2 form-control-label">Start time</label>
 						<div class="col-sm-6">
-							<input type="text" name="starttime" class="form-control" id="starttime" placeholder="Start time"  value="<%=_p.parties.starttime%>">
+							<input type="text" name="starttime" class="form-control" id="starttime" placeholder="Start time"  value="<%=_p.starttime%>" />
 						</div>
 					</div>															
 					<div class="form-group row">
 						<label class="col-sm-2 form-control-label">End time</label>
 						<div class="col-sm-6">
-							<input type="text" name="endtime" class="form-control" id="endtime" placeholder="End time" value="<%=_p.parties.endtime%>">
+							<input type="text" name="endtime" class="form-control" id="endtime" placeholder="End time" value="<%=_p.endtime%>" />
 						</div>
-					</div>															
+					</div>-->
 					<div class="form-group row">
-						<label class="col-sm-2 form-control-label">Party Logo</label>
+						<label class="col-sm-2 form-control-label">Duration</label>
 						<div class="col-sm-6">
-							<input type="file" name="logofilename" id="logofilename" />
-						</div>
-					</div>																									
-					<div class="form-group row">
-						<label class="col-sm-2 form-control-label">Location</label>
-						<div class="col-sm-6">
-							<input type="text" name="location" class="form-control" id="location" placeholder="Location" value="<%=_p.parties.location%>">
+							<input type="number" name="duration" class="form-control" id="duration" placeholder="Duration" value="<%=_p.duration%>" />
 						</div>
 					</div>																				
-					<input type="text" style="display:none;" name="backgroundImagePath" />
-					<input type="text" style="display:none;" name="partylogopath" />
+					<div class="form-group row">
+						<label class="col-sm-2 form-control-label">price</label>
+						<div class="col-sm-6">
+							<input type="number" name="price" class="form-control" id="price" placeholder="Price" value="<%=_p.price%>" />
+						</div>
+					</div>																				
+					
+					<input type="hidden" name="latitude" class="form-control" id="latitude" placeholder="Latitude" value="<%=_p.latitude%>">																										
+					<input type="hidden" name="longitude" class="form-control" id="longitude" placeholder="Longitude" value="<%=_p.longitude%>">										
 					<div class="form-group row">						
 						<div class="col-sm-8">
 							<button type="submit" id="btnEdit" name="btnEdit" class="btn btn-inline pull-right"><i class="fa fa-edit"></i> Edit</button>
@@ -101,6 +149,39 @@
 		</div>
 	</div>	
 	<% include partials/js %>
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places&key=AIzaSyD65Fhu-o3CjNr1Um1gcXiP0xRCV__puPo"></script>
+	<script type="text/javascript">
+        function initialize() {
+			var address = (document.getElementById('location'));
+			var autocomplete = new google.maps.places.Autocomplete(address);
+			autocomplete.setTypes(['geocode']);
+			google.maps.event.addListener(autocomplete, 'place_changed', function() {
+				var place = autocomplete.getPlace();
+				if (!place.geometry) {
+					return;
+				}
+				var address = '';
+				if (place.address_components) {
+					address = [
+						(place.address_components[0] && place.address_components[0].short_name || ''),
+						(place.address_components[1] && place.address_components[1].short_name || ''),
+						(place.address_components[2] && place.address_components[2].short_name || '')
+						].join(' ');
+				}
+			});
+		}
+		function codeAddress() {
+			geocoder = new google.maps.Geocoder();
+			var address = document.getElementById("location").value;
+			geocoder.geocode( { 'address': address}, function(results, status) {
+				if (status == google.maps.GeocoderStatus.OK) {
+					document.getElementById("latitude").value = results[0].geometry.location.lat();
+					document.getElementById("longitude").value=results[0].geometry.location.lng();				
+					} 
+				});
+			}
+			google.maps.event.addDomListener(window, 'load', initialize);
+        </script>
 	<script>
     $(function () {       
         $("#startdate").datepicker({

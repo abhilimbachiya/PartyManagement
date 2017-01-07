@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+    <title>Create Party</title>
+    <%- include('../includes/head'); %>
+</head>
+
+<body>
+
+<%- include('../includes/header'); %>
+
+<div id="page-content">
+        <div class="container">
+            <!--end breadcrumb-->
+            <section class="page-title">
+                <h1>My Parties</h1>
+            </section>
+            <!--end page-title-->
+            <section>
+                <div class="my-items table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Parties</th>
+                            <!-- <th>Featured</th> -->
+                            <th>Reviews</th>
+                            <th>Rating</th>
+                            <th>Last Edited</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <% parties.forEach(function(party) { %>
+                        <tr class="my-item">
+                            <td>
+                                <div class="image-wrapper">
+                                    <!-- <div class="circle" data-toggle="tooltip" data-placement="right" title="Top Listing"><i class="fa fa-thumbs-up"></i></div> -->
+                                    <a href="/parties/<%= party.id %>" class="image">
+                                        <div class="bg-transfer">
+                                            <img src="<%= party.getImageUrl() %>">
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="info">
+                                    <a href="/parties/<%= party.id %>"><h2><%= party.title %></h2></a>
+                                    <figure class="location"><%= party.location %></figure>
+                                    <figure class="label label-info">Hotel</figure>
+                                    <div class="additional-info">
+                                        <!-- <span><i class="fa fa-bed"></i>12</span> -->
+                                        <span class="price-info"><span class="price">$<%= party.price %></span></span>
+                                    </div>
+                                    <!--end additional-info-->
+                                </div>
+                                <!--end info-->
+                            </td>
+                            <!-- <td><div class="featured yes"><i class="fa fa-check"></i><aside></aside></div></td> -->
+                            <td class="reviews">45</td>
+                            <td class="rating">
+                                <div class="rating-passive" data-rating="4">
+                                    <span class="stars"></span>
+                                    <span class="reviews">6</span>
+                                </div>
+                            </td>
+                            <td class="last-edited">Today 15:32
+                                <span class="last-edit">Last edited: Today 12:35</span>
+                                <div class="edit-options">
+                                    <a href="/parties/<%= party.id %>/edit" class="link icon"><i class="fa fa-edit"></i>Edit</a>
+                                    <a href="/parties/<%= party.id %>/reviews" class="link icon"><i class="fa fa-comment"></i>Reviews</a>
+                                    <a href="/parties/<%= party.id %>/delete" class="link icon delete"><i class="fa fa-trash"></i>Delete</a>
+                                </div>
+                                <!--end edit-options-->
+                            </td>
+                        </tr>
+                        <!--end my-item-->
+                        <% }); %>
+                        
+                        </tbody>
+                    </table>
+                </div>
+                <!--end my-items-->
+            </section>
+            <section>
+                <div class="center">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            <li class="disabled previous">
+                                <a href="#" aria-label="Previous">
+                                    <i class="arrow_left"></i>
+                                </a>
+                            </li>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li class="active"><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                            <li class="next">
+                                <a href="#" aria-label="Next">
+                                    <i class="arrow_right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </section>
+        </div>
+        <!--end container-->
+    </div>
+    <!--end page-content-->
+
+<%- include('../includes/foot'); %>
+
+</body>
+

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+    <title>Create Party</title>
+    <%- include('../includes/head'); %>
+</head>
+
+<body>
+
+<%- include('../includes/header'); %>
+
+    <div id="page-content">
+        <div class="container">
+            <section class="page-title pull-left">
+                <h1><%= party.title %></h1>
+                <h3><%= party.location %></h3>
+                <div class="rating-passive" data-rating="4">
+                    <span class="stars"></span>
+                    <span class="reviews">6</span>
+                </div>
+            </section>
+            <!--end page-title-->
+            <a href="#write-a-review" class="btn btn-primary btn-framed btn-rounded btn-light-frame icon scroll pull-right"><i class="fa fa-star"></i>Write a review</a>
+        </div>
+        <!--end container-->
+        <section>
+            <div class="gallery detail">
+                <div class="owl-carousel" data-owl-items="3" data-owl-loop="1" data-owl-auto-width="1" data-owl-nav="1" data-owl-dots="0" data-owl-margin="2" data-owl-nav-container="#gallery-nav">
+                    <% party.images.forEach(function(image) { %>
+                    <div class="image">
+                        <div class="bg-transfer"><img src="<%= '/' + image.destination + '/' + image.filename %>" alt=""></div>
+                    </div>
+                    <% }); %>
+                </div>
+                <!--end owl-carousel-->
+            </div>
+            <!--end gallery-->
+        </section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-7 col-sm-7">
+                    <div id="gallery-nav"></div>
+                    <section>
+                        <h2>About this Listing</h2>
+                        <p>
+                           <%= party.description %>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Features</h2>
+                        <ul class="tags">
+                            <li>Wi-Fi</li>
+                            <li>Parking</li>
+                            <li>Coffee</li>
+                            <li>Indica</li>
+                            <li>Blunts + Joints</li>
+                            <li>Edibles</li>
+                            <li>Balcony</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Reviews</h2>
+                        <div class="review">
+                            <div class="image">
+                                <div class="bg-transfer"><img src="assets/img/person-02.jpg" alt=""></div>
+                            </div>
+                            <div class="description">
+                                <figure>
+                                    <div class="rating-passive" data-rating="4">
+                                        <span class="stars"></span>
+                                        <span class="reviews">6</span>
+                                    </div>
+                                    <span class="date">09.05.2016</span>
+                                </figure>
+                                <p>Wow, everyone needs to try this out.... I promise you will really enjoy this. I have been a cannaibis enthusiast for a long time now and have never seen anything like this!</p>
+                            </div>
+                        </div>
+                        <!--end review-->
+                        <div class="review">
+                            <div class="image">
+                                <div class="bg-transfer"><img src="assets/img/person-01.jpg" alt=""></div>
+                            </div>
+                            <div class="description">
+                                <figure>
+                                    <div class="rating-passive" data-rating="5">
+                                        <span class="stars"></span>
+                                        <span class="reviews">6</span>
+                                    </div>
+                                    <span class="date">09.05.2016</span>
+                                </figure>
+                                <p>This was truly an amazing expereince; I was a little skeptic at first but after meeting Daniel in person and enjoying the nice conversation over a warm cup of coffee + smoke; I have to say Listing is amazing.  
+                                </p>
+                            </div>
+                        </div>
+                        <!--end review-->
+                    </section>
+                    <section id="write-a-review">
+                        <h2>Write a Review</h2>
+                        <form class="clearfix form inputs-underline">
+                            <div class="box">
+                                <div class="comment">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="comment-title">
+                                                <h4>Review your experience</h4>
+                                            </div>
+                                            <!--end title-->
+                                            <div class="form-group">
+                                                <label for="name">Title of your review<em>*</em></label>
+                                                <input type="text" class="form-control" id="name" name="name" placeholder="Beautiful place!" required="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="message">Your Message<em>*</em></label>
+                                                <textarea class="form-control" id="message" rows="8" name="message" required="" placeholder="Describe your experience"></textarea>
+                                            </div>
+                                            <!--end form-group-->
+                                            <div class="form-group pull-right">
+                                                <button type="submit" class="btn btn-primary btn-rounded">Send Review</button>
+                                            </div>
+                                            <!--end form-group-->
+                                        </div>
+                                        <!--end col-md-8-->
+                                        <div class="col-md-4">
+                                            <div class="comment-title">
+                                                <h4>Rating</h4>
+                                            </div>
+                                            <!--end title-->
+                                            <dl class="visitor-rating">
+                                                <dt>Comfort</dt>
+                                                <dd class="star-rating active" data-name="comfort"></dd>
+                                                <dt>Location</dt>
+                                                <dd class="star-rating active" data-name="location"></dd>
+                                                <dt>Facilities</dt>
+                                                <dd class="star-rating active" data-name="facilities"></dd>
+                                                <dt>Quality of listing</dt>
+                                                <dd class="star-rating active" data-name="staff"></dd>
+                                                <dt>Value for money</dt>
+                                                <dd class="star-rating active" data-name="value"></dd>
+                                            </dl>
+                                        </div>
+                                        <!--end col-md-4-->
+                                    </div>
+                                    <!--end row-->
+                                </div>
+                                <!--end comment-->
+                            </div>
+                            <!--end review-->
+                        </form>
+                        <!--end form-->
+                    </section>
+                </div>
+                <!--end col-md-7-->
+                <div class="col-md-5 col-sm-5">
+                    <div class="detail-sidebar">
+                        <section class="shadow">
+                            <div class="map height-250px" id="map-detail"></div>
+                            <!--end map-->
+                            <div class="content">
+                                <div class="vertical-aligned-elements">
+                                    <div class="element"><img src="/assets/img/logo.png" alt=""></div>
+                                    <div class="element text-align-right"><a href="#" class="btn btn-primary btn-rounded btn-xs">Claim</a></div>
+                                </div>
+                                <hr>
+                                <address>
+                                    <figure><i class="fa fa-map-marker"></i><%= party.location %></figure>
+                                    <figure><i class="fa fa-envelope"></i><a href="#"><%= party.email %></a></figure>
+                                    <figure><i class="fa fa-phone"></i><%= party.contact_no %></figure>
+                                    <figure><i class="fa fa-globe"></i><a href="<%= party.website %>"><%= party.website %></a></figure>
+                                </address>
+                            </div>
+                        </section>
+                        <!-- <section>
+                            <h2>Opening Hours</h2>
+                            <dl>
+                                <dt>Monday</dt>
+                                <dd>08:00am - 11:00pm</dd>
+                                <dt>Tuesday</dt>
+                                <dd>08:00am - 11:00pm</dd>
+                                <dt>Wednesday</dt>
+                                <dd>12:00am - 11:00pm</dd>
+                                <dt>Thursday</dt>
+                                <dd>08:00am - 11:00pm</dd>
+                                <dt>Friday</dt>
+                                <dd>03:00pm - 02:00am</dd>
+                                <dt>Saturday</dt>
+                                <dd>03:00pm - 02:00am</dd>
+                                <dt>Sunday</dt>
+                                <dd>Closed</dd>
+                            </dl>
+                        </section> -->
+                        <section>
+                            <h2>Share This Listing</h2>
+                            <div class="social-share"></div>
+                        </section>
+                    </div>
+                    <!--end detail-sidebar-->
+                </div>
+                <!--end col-md-5-->
+            </div>
+            <!--end row-->
+        </div>
+        <!--end container-->
+    </div>
+
+<%- include('../includes/foot'); %>
+<script>
+    rating(".visitor-rating");
+    var _latitude = <%= party.latitude %>;
+    var _longitude = <%= party.longitude %>;
+    var element = "map-detail";
+    simpleMap(_latitude,_longitude, element);
+</script>
+
+</body>
+
