@@ -91,7 +91,7 @@ function heroMap(_latitude,_longitude, element, markerTarget, sidebarResultTarge
 
                 if( markers[i]["featured"] == 1 ){
                     markerContent.innerHTML =
-                    '<div class="marker" data-id="'+ markers[i]["id"] +'">' +
+                    '<div class="marker" data-id="'+ markers[i]["_id"] +'">' +
                         '<div class="title">'+ markers[i]["title"] +'</div>' +
                         '<div class="marker-wrapper">' +
                             '<div class="tag"><i class="fa fa-check"></i></div>' +
@@ -103,7 +103,7 @@ function heroMap(_latitude,_longitude, element, markerTarget, sidebarResultTarge
                 }
                 else {
                     markerContent.innerHTML =
-                        '<div class="marker" data-id="'+ markers[i]["id"] +'">' +
+                        '<div class="marker" data-id="'+ markers[i]["_id"] +'">' +
                             '<div class="title">'+ markers[i]["title"] +'</div>' +
                             '<div class="marker-wrapper">' +
                                 '<div class="pin">' +
@@ -114,19 +114,19 @@ function heroMap(_latitude,_longitude, element, markerTarget, sidebarResultTarge
 
                 // Latitude, Longitude and Address
 
-                if ( markers[i]["latitude"] && markers[i]["longitude"] && markers[i]["address"] ){
+                if ( markers[i]["latitude"] && markers[i]["longitude"] && markers[i]["location"] ){
                     renderRichMarker(i,"latitudeLongitude");
                 }
 
                 // Only Address
 
-                else if ( markers[i]["address"] && !markers[i]["latitude"] && !markers[i]["longitude"] ){
+                else if ( markers[i]["location"] && !markers[i]["latitude"] && !markers[i]["longitude"] ){
                     renderRichMarker(i,"address");
                 }
 
                 // Only Latitude and Longitude
 
-                else if ( markers[i]["latitude"] && markers[i]["longitude"] && !markers[i]["address"] ) {
+                else if ( markers[i]["latitude"] && markers[i]["longitude"] && !markers[i]["location"] ) {
                     renderRichMarker(i,"latitudeLongitude");
                 }
 
@@ -273,14 +273,13 @@ function heroMap(_latitude,_longitude, element, markerTarget, sidebarResultTarge
 
             function openSidebarDetail(id){
                 $.ajax({
-                    url: "assets/external/sidebar_detail.php",
-                    data: { id: id },
-                    method: "POST",
+                    url: "/api/parties/" + id,
+                    method: "GET",
                     success: function(results){
                         $(".sidebar-wrapper").html(results);
                         $(".results-wrapper").removeClass("loading");
                         initializeOwl();
-                        ratingPassive(".sidebar-wrapper .sidebar-content");
+                        ratingPassive(".sidebar-wrapper");
                         initializeFitVids();
                         socialShare();
                         initializeReadMore();
@@ -360,50 +359,50 @@ function heroMap(_latitude,_longitude, element, markerTarget, sidebarResultTarge
                 markerCluster.repaint();
 
                 // Ajax load data for sidebar results after markers are placed
+console.log(visibleMarkersId);
+                $.ajax({
+                    url: "/api/parties/search/id",
+                    method: "POST",
+                    data: { markers: visibleMarkersId },
+                    success: function(results){
+                        resultsArray.push(results); // push the results from php into array
+                        $(".results-wrapper .results-content").html(results); // render the new php data into html element
+                        $(".results-wrapper .section-title h2 .results-number").html(visibleMarkersId.length); // show the number of results
+                        ratingPassive(".results-wrapper .results"); // render rating stars
 
-                // $.ajax({
-                //     url: "assets/external/sidebar_results.php",
-                //     method: "POST",
-                //     data: { markers: visibleMarkersId },
-                //     success: function(results){
-                //         resultsArray.push(results); // push the results from php into array
-                //         $(".results-wrapper .results-content").html(results); // render the new php data into html element
-                //         $(".results-wrapper .section-title h2 .results-number").html(visibleMarkersId.length); // show the number of results
-                //         ratingPassive(".results-wrapper .results"); // render rating stars
+                        // Hover on the result in sidebar will highlight the marker
 
-                //         // Hover on the result in sidebar will highlight the marker
+                        $(".result-item").on("mouseenter", function(){
+                            $(".map .marker[data-id="+ $(this).attr("data-id") +"]").addClass("hover-state");
+                        }).on("mouseleave", function(){
+                                $(".map .marker[data-id="+ $(this).attr("data-id") +"]").removeClass("hover-state");
+                        });
 
-                //         $(".result-item").on("mouseenter", function(){
-                //             $(".map .marker[data-id="+ $(this).attr("data-id") +"]").addClass("hover-state");
-                //         }).on("mouseleave", function(){
-                //                 $(".map .marker[data-id="+ $(this).attr("data-id") +"]").removeClass("hover-state");
-                //         });
+                        trackpadScroll("recalculate");
 
-                //         trackpadScroll("recalculate");
+                        // Show detailed information in sidebar
 
-                //         // Show detailed information in sidebar
+                        $(".result-item").children("a").on("click", function(e){
+                            if( sidebarResultTarget == "sidebar" ){
+                                e.preventDefault();
+                                openSidebarDetail( $(this).parent().attr("data-id") );
+                            }
+                            else if( sidebarResultTarget == "modal" ){
+                                e.preventDefault();
+                                openModal( $(this).parent().attr("data-id"), "modal_item.php" );
+                            }
 
-                //         $(".result-item").children("a").on("click", function(e){
-                //             if( sidebarResultTarget == "sidebar" ){
-                //                 e.preventDefault();
-                //                 openSidebarDetail( $(this).parent().attr("data-id") );
-                //             }
-                //             else if( sidebarResultTarget == "modal" ){
-                //                 e.preventDefault();
-                //                 openModal( $(this).parent().attr("data-id"), "modal_item.php" );
-                //             }
+                            $(lastClickedMarker).removeClass("active");
 
-                //             $(lastClickedMarker).removeClass("active");
+                            $(".map .marker[data-id="+ $(this).parent().attr("data-id") +"]").addClass("active");
+                            lastClickedMarker = $(".map .marker[data-id="+ $(this).parent().attr("data-id") +"]");
+                        });
 
-                //             $(".map .marker[data-id="+ $(this).parent().attr("data-id") +"]").addClass("active");
-                //             lastClickedMarker = $(".map .marker[data-id="+ $(this).parent().attr("data-id") +"]");
-                //         });
-
-                //     },
-                //     error : function (e) {
-                //         console.log(e);
-                //     }
-                // });
+                    },
+                    error : function (e) {
+                        console.log(e);
+                    }
+                });
 
             }
         }

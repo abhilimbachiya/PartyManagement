@@ -17,12 +17,9 @@
                                         <div class="form-group">
                                             <label for="category">Category</label>
                                             <select class="form-control selectpicker" name="category" id="category">
-                                                <option value="">Indicas</option>
-                                                <option value="1">Sativas</option>
-                                                <option value="2">Blunts + Joints</option>
-                                                <option value="3">Edibles</option>
-                                                <option value="4">Vapes</option>
-                                                <option value="5">Extracts</option>
+                                                <% categories.forEach(function(category) { %>
+                                                <option value="<%= category.id %>"><%= category.name %></option>
+                                                <% }); %>
                                             </select>
                                         </div>
                                         <!--end form-group-->

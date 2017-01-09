@@ -44,7 +44,9 @@
                                 <div class="info">
                                     <a href="/parties/<%= party.id %>"><h2><%= party.title %></h2></a>
                                     <figure class="location"><%= party.location %></figure>
-                                    <figure class="label label-info">Hotel</figure>
+                                    <% if (party.category) { %>
+                                    <figure class="label label-info"><%= party.category.name %></figure>
+                                    <% } %>
                                     <div class="additional-info">
                                         <!-- <span><i class="fa fa-bed"></i>12</span> -->
                                         <span class="price-info"><span class="price">$<%= party.price %></span></span>

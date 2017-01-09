@@ -1,5 +1,6 @@
 ﻿var User = require('../app/models/user');
 var Party = require('../app/models/party');
+var Review = require('../app/models/review');
 var Admin = require('../app/models/admins');
 var Category = require("../app/models/category")
 var multer = require('multer');
@@ -14,16 +15,78 @@ module.exports = function (app, passport) {
     app.use(function(req, res, next) {
       res.locals.user = req.user;
       next();
-    });
+  });
+
+    function isLoggedIn(req, res, next) {
+        if (req.isAuthenticated())
+            return next();
+
+        res.redirect('/signin');
+    }
 
     //for home page
     app.get("/", function (req, res) {
-        res.render('frontend/index');
+        Category.find({}, function (err, categories) {
+            res.render('frontend/index', {
+                categories: categories
+            });
+        });
     });
 
+    app.get("/api/parties", function (req, res) {
+        Party.find({}, function (err, parties) {
+            res.json(parties);
+        });
+    });
+
+    app.get("/api/parties/:id", function (req, res) {
+     var query = Party.find({});
+     if( req.params.keyword !== "" ) {
+        query = query.where('title').equals(req.params.keyword);
+    }
+        // if( req.params.min-price !== "" ) {
+        //      query = query.where('price').lt(req.params.min-price);
+        // }
+        query.exec( function (err, parties) {
+            res.json(parties);
+        });
+    });
+
+    app.post("/api/parties/search/id", function (req, res) {
+        var query = Party.find()
+        if(req.body.markers)
+          query = query.where('_id').in(req.body.markers);
+
+      query = query.exec(function (err, parties) {
+        res.render('frontend/parties/api_parties', {
+            parties: parties
+        });
+    });
+  });
+
     app.post("/api/parties", function (req, res) {
-        Party.find({}, function (err, _parties) {
-            res.json(_parties);
+        // if( req.body.keyword ) {
+        //     query = Party.find({title: new RegExp('^'+req.body.keyword+'$', "i")});
+        // }
+
+        // else{
+            // var query = Party.find();
+        // }
+
+        // if( req.body.min-price ) {
+        //      query = query.where('price').lt(req.body.min-price);
+        // }
+
+        // if( req.body.category ) {
+            // query = Party.where('category').equals(req.body.category);
+        // }
+        // if( req.body.min-price !== "" ) {
+        // }
+        // query.exec( function (err, parties) {
+        //     res.json(parties);
+        // });
+        Party.find({}, function (err, parties) {
+            res.json(parties);
         });
     });
 
@@ -52,28 +115,32 @@ module.exports = function (app, passport) {
         failureFlash: true
     }));
 
-    app.get("/parties/create", function (req, res) {
-        res.render('frontend/parties/create', {
-            party: {}
+    app.get("/parties/create", isLoggedIn, function (req, res) {
+        Category.find({}, function (err, categories) {
+            res.render('frontend/parties/create', {
+                party: {},
+                categories: categories
+            });
         });
     });
 
     var partyImagesStorage = multer.diskStorage({
       destination: function (req, file, cb) {
         cb(null, './public/uploads/parties/images/')
-      },
-      filename: function (req, file, cb) {
+    },
+    filename: function (req, file, cb) {
         crypto.pseudoRandomBytes(16, function (err, raw) {
           cb(null, raw.toString('hex') + Date.now() + '.' + mime.extension(file.mimetype));
-        });
-      }
-    });
+      });
+    }
+});
 
     var partyImagesUpload = multer({ storage: partyImagesStorage })
 
-    app.post("/parties/create", partyImagesUpload.any(), function (req, res) {
+    app.post("/parties/create", isLoggedIn, partyImagesUpload.any(), function (req, res) {
         var party = new Party();
         party.user_id = req.user.id;
+        party.category = req.body.category;
         party.title = req.body.title;
         party.description = req.body.description;
         party.price = req.body.price;
@@ -97,25 +164,29 @@ module.exports = function (app, passport) {
         });
     })
 
-    app.get("/parties", function (req, res) {
-        Party.find({user_id: req.user.id}, function (err, _parties) {
+    app.get("/parties", isLoggedIn, function (req, res) {
+        Party.find({user_id: req.user.id}).populate('category').exec(function (err, parties) {
             res.render('frontend/parties/index', {
-                parties: _parties
+                parties: parties
             });
         });
     });
 
-    app.get("/parties/:id/edit", function (req, res) {
-        Party.findOne({ user_id: req.user.id, _id: req.params.id }, function (err, _party) {
-            res.render('frontend/parties/create', {
-                party: _party
+    app.get("/parties/:id/edit", isLoggedIn, function (req, res) {
+        Category.find({}, function (err, categories) {
+            Party.findOne({ user_id: req.user.id, _id: req.params.id }, function (err, party) {
+                res.render('frontend/parties/create', {
+                    party: party,
+                    categories: categories
+                });
             });
         });
     })
 
-    app.post("/parties/:id/edit", partyImagesUpload.any(), function (req, res) {
+    app.post("/parties/:id/edit", isLoggedIn, partyImagesUpload.any(), function (req, res) {
         Party.findOne({ user_id: req.user.id, _id: req.params.id }, function (err, party) {
             party.user_id = req.user.id;
+            party.category = req.body.category;
             party.title = req.body.title;
             party.description = req.body.description;
             party.price = req.body.price;
@@ -136,7 +207,7 @@ module.exports = function (app, passport) {
         });
     })
 
-    app.get("/parties/:id/delete", function (req, res) {
+    app.get("/parties/:id/delete", isLoggedIn, function (req, res) {
         Party.findOne({ user_id: req.user.id, _id: req.params.id }, function (err, _party) {
             if (_party != null) {
                 Party.remove({ _id: req.params.id }, function (err, done) {
@@ -146,10 +217,25 @@ module.exports = function (app, passport) {
         });
     })
 
+    app.post("/parties/:id/reviews", isLoggedIn, function (req, res) {
+        Party.findOne({ _id: req.params.id }, function (err, party) {
+            var review = new Review();
+            review.user = req.user.id;
+            review.party = party.id;
+            review.title = req.body.title;
+            review.content = req.body.content;
+            review.save();
+            res.redirect('/parties/' + party.id);               
+        });
+    });
+
     app.get("/parties/:id", function (req, res) {
-        Party.findOne({ _id: req.params.id }, function (err, _party) {
-            res.render('frontend/parties/show', {
-                party: _party
+        Party.findOne({ _id: req.params.id }).populate('category').exec(function (err, party) {
+            Review.find({ party: req.params.id }).populate('user').exec(function (err, reviews) {
+                res.render('frontend/parties/show', {
+                    party: party,
+                    reviews: reviews
+                });
             });
         });
     })
@@ -284,13 +370,19 @@ module.exports = function (app, passport) {
         res.render('admin/signup.ejs', { message: req.flash('signupMessage') });
     });
 
-    app.get("/admin/profile", isLoggedIn, function (req, res) {
+    function isAdminLoggedIn(req, res, next) {
+        if (req.isAuthenticated())
+            return next();
+        res.redirect('/admin/');
+    }
+
+    app.get("/admin/profile", isAdminLoggedIn, function (req, res) {
         res.render('admin/profile.ejs', {
             user: req.user
         });
     });
 
-    app.get("/admin/userhome", isLoggedIn, function (req, res) {
+    app.get("/admin/userhome", isAdminLoggedIn, function (req, res) {
         res.render('admin/userhome.ejs', {
             user: req.user
         });
@@ -300,12 +392,6 @@ module.exports = function (app, passport) {
         req.logout();
         res.redirect('/admin/');
     });
-
-    function isLoggedIn(req, res, next) {
-        if (req.isAuthenticated())
-            return next();
-        res.redirect('/admin/');
-    }
 
     app.post('/admin/signup', passport.authenticate('local-signup', {
         successRedirect: 'userhome',
@@ -533,7 +619,7 @@ module.exports = function (app, passport) {
     });
     app.post("/admin/addnewcategory", upload.any(), function (req, res) {
         var CategorySchema = new Category();
-        CategorySchema.categoryname = req.body.categoryname;
+        CategorySchema.name = req.body.name;
         CategorySchema.save(function (err) {
             if (!err)
                 res.redirect('/admin/CategoriesLayout');

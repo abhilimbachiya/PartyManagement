@@ -38,4 +38,12 @@ userSchema.methods.validPassword = function (password) {
     return bcrypt.compareSync(password, this.local.password);
 };
 
+userSchema.methods.getAvatarUrl = function getImageUrl ()
+{
+    if(this.avatar.length)
+        return '/uploads/users/avatars/' + this.avatar;
+
+    return '/assets/images/placeholders/user.jpeg';
+};
+
 module.exports = mongoose.model('users', userSchema);

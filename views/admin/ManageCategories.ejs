@@ -50,7 +50,7 @@
 						<tbody>						
 							<% for(var i=0;i<_c.length;i++){%>
 								<tr>
-									<td><%=_c[i].categoryname %></td>																		
+									<td><%=_c[i].name %></td>																		
 									<td class="text-center"><a href="/admin/EditCategoryInfo/<%=_c[i]._id %>" style="text-decoration:none !important;"><i class="fa fa-edit"></a></td>
 									<td class="text-center"><a href="/admin/DeleteCategoryInfo/<%=_c[i]._id %>" id="deleteThis_<%=_c[i]._id %>" data-id="<%=_c[i]._id %>" style="text-decoration:none !important;"><i class="fa fa-remove"></a></td>
 								</tr>

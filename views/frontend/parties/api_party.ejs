@@ -1,0 +1,24 @@
+<div class="result-item" data-id=<%= party._id %>>
+
+    <a href="/parties/<%= party.id %>">
+        <h3><%= party.title %></h3>
+        <div class="result-item-detail">
+
+            <div class="image" style="background-image: url('<%= party.getImageUrl() %>')">
+            <figure>$<%= party.price %></figure>
+            </div>
+            <div class="description">
+                <h5><i class="fa fa-map-marker"></i><%= party.location %></h5>
+                <div class="rating-passive" data-rating="5">
+                    <span class="stars"></span>
+                    <span class="reviews">5</span>
+                </div>
+
+                <div class="label label-default">Category</div>
+
+                <p><%= party.description %></p>
+            </div>
+        </div>
+    </a>
+
+</div>

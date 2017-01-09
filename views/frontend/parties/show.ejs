@@ -21,7 +21,9 @@
                 </div>
             </section>
             <!--end page-title-->
+            <% if(user) { %>
             <a href="#write-a-review" class="btn btn-primary btn-framed btn-rounded btn-light-frame icon scroll pull-right"><i class="fa fa-star"></i>Write a review</a>
+            <% } %>
         </div>
         <!--end container-->
         <section>
@@ -61,11 +63,14 @@
                     </section>
                     <section>
                         <h2>Reviews</h2>
+                        
+                        <% reviews.forEach(function(review) { %>
                         <div class="review">
                             <div class="image">
                                 <div class="bg-transfer"><img src="assets/img/person-02.jpg" alt=""></div>
                             </div>
                             <div class="description">
+                                <h4><%= review.user.local.name %></h4>
                                 <figure>
                                     <div class="rating-passive" data-rating="4">
                                         <span class="stars"></span>
@@ -73,31 +78,18 @@
                                     </div>
                                     <span class="date">09.05.2016</span>
                                 </figure>
-                                <p>Wow, everyone needs to try this out.... I promise you will really enjoy this. I have been a cannaibis enthusiast for a long time now and have never seen anything like this!</p>
+                                <p><%= review.content %></p>
                             </div>
                         </div>
+                        <% }); %>
                         <!--end review-->
-                        <div class="review">
-                            <div class="image">
-                                <div class="bg-transfer"><img src="assets/img/person-01.jpg" alt=""></div>
-                            </div>
-                            <div class="description">
-                                <figure>
-                                    <div class="rating-passive" data-rating="5">
-                                        <span class="stars"></span>
-                                        <span class="reviews">6</span>
-                                    </div>
-                                    <span class="date">09.05.2016</span>
-                                </figure>
-                                <p>This was truly an amazing expereince; I was a little skeptic at first but after meeting Daniel in person and enjoying the nice conversation over a warm cup of coffee + smoke; I have to say Listing is amazing.  
-                                </p>
-                            </div>
-                        </div>
-                        <!--end review-->
+                        
                     </section>
+
+                    <% if(user) { %>
                     <section id="write-a-review">
                         <h2>Write a Review</h2>
-                        <form class="clearfix form inputs-underline">
+                        <form class="clearfix form inputs-underline" action="/parties/<%= party.id %>/reviews" method="POST">
                             <div class="box">
                                 <div class="comment">
                                     <div class="row">
@@ -108,11 +100,11 @@
                                             <!--end title-->
                                             <div class="form-group">
                                                 <label for="name">Title of your review<em>*</em></label>
-                                                <input type="text" class="form-control" id="name" name="name" placeholder="Beautiful place!" required="">
+                                                <input type="text" class="form-control" id="name" name="title" placeholder="Title" required="">
                                             </div>
                                             <div class="form-group">
                                                 <label for="message">Your Message<em>*</em></label>
-                                                <textarea class="form-control" id="message" rows="8" name="message" required="" placeholder="Describe your experience"></textarea>
+                                                <textarea class="form-control" id="message" rows="8" name="content" required="" placeholder="Describe your experience"></textarea>
                                             </div>
                                             <!--end form-group-->
                                             <div class="form-group pull-right">
@@ -149,6 +141,7 @@
                         </form>
                         <!--end form-->
                     </section>
+                    <% } %>
                 </div>
                 <!--end col-md-7-->
                 <div class="col-md-5 col-sm-5">
