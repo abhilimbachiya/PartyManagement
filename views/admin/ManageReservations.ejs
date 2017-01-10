@@ -1,0 +1,64 @@
+﻿<html>
+<head>
+  <title>Party Management | Manage parties</title>
+  <% include partials/css %>
+</head>
+<body class="with-side-menu-addl-full chrome-browser"> 
+	<header class="site-header">
+		<% include partials/head %>	    
+	</header>
+	<div class="mobile-menu-left-overlay"></div>
+	<nav class="side-menu">
+		<% include partials/sidebar %>
+	</nav>
+	<div class="page-content">
+		<div class="container-fluid">
+			<header class="section-header">
+				<div class="tbl">
+					<div class="tbl-row">
+						<div class="tbl-cell">
+							<h5>MANAGE RESERVATIONS</h5>							
+							<ol class="breadcrumb breadcrumb-simple">
+								<li><a href="#">Home</a></li>
+								<li class="active">Manage Reservations</li>								
+							</ol>							
+						</div>
+					</div>
+				</div>				
+			</header>
+			<section class="card">
+				<div class="card-block">					
+					<table id="example" class="display table table-bordered" cellspacing="0" width="100%" style="width: 100%;margin-top:1%;">
+						<thead>
+						<tr role="row">
+							<th class="sorting">Username</th>
+							<th class="sorting_asc">Party</th>
+							<th class="sorting">Transaction Id</th>															
+							<th class="sorting">Price</th>							
+						</tr>
+						</thead>						
+						<tbody>						
+							<% for(var i=0;i<reservations.length;i++){%>
+								<tr>
+									<td><%=reservations[i].user.local.email %></td>
+									<td><%=reservations[i].party.title%></td>
+									<td><%=reservations[i].transaction_reference%></td>
+									<td><%=reservations[i].price%></td>									
+								</tr>
+							<%}%>
+						</tbody>
+					</table>					
+				</div>
+			</section>
+		</div>
+	</div>
+	<% include partials/js %>
+	<script>
+		$(function() {
+			$('#example').DataTable({
+				responsive: true
+			});
+		});
+	</script>
+</body>
+</html>

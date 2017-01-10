@@ -6,6 +6,33 @@
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<title>Party Management | Dashboard</title>
 	<% include partials/css %>		
+	<style>
+		.w3-content {
+			max-width: 280px !important;
+			margin: auto;
+		}
+		.set-position{
+			float: right !important;
+			position: absolute !important;
+			right: 0px !important;
+			margin-right: 8% !important;
+		}
+		.w3-btn-floating, .w3-btn-floating-large{
+			background-color: #fff !important;
+		}
+		.w3-display-left {			
+			top: 65% !important;					    
+			border-radius: 50%;
+			padding-left: 15px;
+			font-weight: 600;							
+		}
+		.w3-display-right {			
+			top: 65% !important;
+			border-radius: 50%;
+			padding-left: 15px;
+			font-weight: 600;
+		}
+	</style>
 </head>
 <body class="with-side-menu control-panel control-panel-compact">
 	<header class="site-header">
@@ -21,7 +48,7 @@
 				<div class="tbl">
 					<div class="tbl-row">
 						<div class="tbl-cell">
-							<h3>Edit party details</h3>
+							<h5>EDIT PARTY</h5>
 							<ol class="breadcrumb breadcrumb-simple">
 								<li><a href="#">Home</a></li>
 								<li><a href="#">Manage Parties</a></li>
@@ -32,7 +59,15 @@
 				</div>
 			</header>
 			<div class="box-typical box-typical-padding">				
-				<form enctype="multipart/form-data" name="frmEditParty" method="post" action="/admin/EditPartyEvent">
+				<form enctype="multipart/form-data" name="frmEditParty" method="post" action="/admin/EditPartyEvent">															
+					<div class="w3-content w3-display-container set-position">
+						<p>Party Images</p>						
+						  <%for(var j=0;j<_p.images.length;j++){%>
+								<img class="mySlides" src="\<%=_p.images[j].path %>" style="width:100%;height:150px !important;" />
+							<%}%>
+						  <a class="w3-btn-floating w3-display-left" onclick="plusDivs(-1)">&#10094;</a>
+						  <a class="w3-btn-floating w3-display-right" onclick="plusDivs(1)">&#10095;</a>
+					</div>					
 					<input type="text" class="form-control" name="id" id="id" placeholder="id" style="display:none" value="<%=_p._id%>" />
 					<div class="form-group row">
 						<label class="col-sm-2 form-control-label">Title</label>
@@ -53,6 +88,16 @@
 						</div>
 					</div>
 					<div class="form-group row">
+						<label class="col-sm-2 form-control-label">Categories</label>
+						<div class="col-sm-6">
+							<select class="form-control selectpicker" name="category" id="category">
+								<% categories.forEach(function(category) { %>
+									<option value="<%= category.id %>"><%= category.name %></option>
+								<% }); %>
+                            </select>
+						</div>
+					</div>											
+					<div class="form-group row">
 						<label class="col-sm-2 form-control-label">Contact no</label>
 						<div class="col-sm-6">
 							<input type="text" name="contact_no" class="form-control" id="contact_no" placeholder="Contact no" value="<%=_p.contact_no%>" />
@@ -64,6 +109,12 @@
 							<input type="text" name="email" class="form-control" id="email" placeholder="Email" value="<%=_p.email%>" />
 						</div>
 					</div>												
+					<div class="form-group row">
+						<label class="col-sm-2 form-control-label">Images</label>
+						<div class="col-sm-6">
+							<input type="file" name="Images" id="Images" multiple />
+						</div>
+					</div>																	
 					<div class="form-group row">
 						<label class="col-sm-2 form-control-label">Website</label>
 						<div class="col-sm-6">
@@ -183,23 +234,42 @@
 			google.maps.event.addDomListener(window, 'load', initialize);
         </script>
 	<script>
-    $(function () {       
-        $("#startdate").datepicker({
-            format: "dd/mm/yyyy",
-            autoclose: true,
-            todayHighlight: true,
-            todayBtn: 'linked',
-            keyboardNavigation: true,
-        });
+		$(function () { 				
+			$("#startdate").datepicker({
+				format: "dd/mm/yyyy",
+				autoclose: true,
+				todayHighlight: true,
+				todayBtn: 'linked',
+				keyboardNavigation: true,
+			});
 
-        $("#enddate").datepicker({
-            format: "dd/mm/yyyy",
-            autoclose: true,
-            todayHighlight: true,
-            todayBtn: 'linked',
-            keyboardNavigation: true,
-        });        
-    })
-</script>
+			$("#enddate").datepicker({
+				format: "dd/mm/yyyy",
+				autoclose: true,
+				todayHighlight: true,
+				todayBtn: 'linked',
+				keyboardNavigation: true,
+			});        
+		})
+	</script>
+	<script>
+		var slideIndex = 1;
+		showDivs(slideIndex);
+
+		function plusDivs(n) {
+		  showDivs(slideIndex += n);
+		}
+
+		function showDivs(n) {
+		  var i;
+		  var x = document.getElementsByClassName("mySlides");
+		  if (n > x.length) {slideIndex = 1}    
+		  if (n < 1) {slideIndex = x.length}
+		  for (i = 0; i < x.length; i++) {
+			 x[i].style.display = "none";  
+		  }
+		  x[slideIndex-1].style.display = "block";  
+		}
+	</script>
 </body>
 </html>

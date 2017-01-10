@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+  <title>Checkout</title>
+  <%- include('../../includes/head'); %>
+</head>
+
+<body>
+
+  <%- include('../../includes/header'); %>
+
+  <div id="page-content">
+    <div class="container">
+                <div class="col-md-6 col-sm-6 col-md-offset-3 col-sm-offset-3">
+      
+      <div class="content">
+      <header>
+        <h1>Book party</h1>
+        <h3><%= party.title %></h3>
+        <h4>$<%= party.price %></h4>
+      </header>
+        <form id="payment-form" method="post">
+          <section>
+            <div class="bt-drop-in-wrapper">
+              <div id="bt-dropin"></div>
+            </div>
+          </section>
+          <button type="submit" class="btn btn-primary"><span>Book</span></button>
+          <input type="hidden" name="payment_method_nonce" value="">
+        </form>
+      </div>
+    </div>
+    <!--end container-->
+  </div>
+  </div>
+  <!--end page-content-->
+  <%- include('../../includes/foot'); %>
+  <script src="https://js.braintreegateway.com/js/braintree-2.27.0.min.js"></script>
+  <script type="text/javascript" src="/javascript/vendor/jquery.lettering-0.6.1.min.js"></script>
+  <script type="text/javascript" src="/javascript/demo.js"></script>
+  <script>
+    $( document ).ready(function(){
+      // var checkout = new Demo({
+      //   formID: 'payment-form'
+      // });
+
+      var token = '<%= clientToken %>';
+      braintree.setup(token, "dropin", {
+        container: "bt-dropin"
+      });
+    });
+  </script>
+
+</body>

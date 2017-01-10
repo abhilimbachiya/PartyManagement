@@ -1,0 +1,69 @@
+﻿<html>
+<head>
+  <title>Party Management | Manage parties</title>
+  <% include partials/css %>
+</head>
+<body class="with-side-menu-addl-full chrome-browser"> 
+	<header class="site-header">
+		<% include partials/head %>	    
+	</header>
+	<div class="mobile-menu-left-overlay"></div>
+	<nav class="side-menu">
+		<% include partials/sidebar %>
+	</nav>
+	<div class="page-content">
+		<div class="container-fluid">
+			<header class="section-header">
+				<div class="tbl">
+					<div class="tbl-row">
+						<div class="tbl-cell">
+							<h5>MANAGE REVIEWS</h5>							
+							<ol class="breadcrumb breadcrumb-simple">
+								<li><a href="#">Home</a></li>
+								<li><a href="#">Manage Parties</a></li>
+								<li class="active">Manage Reviews</li>								
+							</ol>							
+						</div>
+					</div>
+				</div>				
+			</header>
+			<section class="card">
+				<div class="card-block">					
+					<table id="example" class="display table table-bordered" cellspacing="0" width="100%" style="width: 100%;margin-top:1%;">
+						<thead>
+						<tr role="row">
+							<th class="sorting">Username</th>
+							<th class="sorting_asc">Title</th>
+							<th class="sorting">Content</th>															
+							<th class="sorting text-center">Actions</th>
+						</tr>
+						</thead>						
+						<tbody>						
+							<% for(var i=0;i<reviews.length;i++){%>
+								<tr>
+									<td><%=reviews[i].user.local.email%></td>
+									<td><%=reviews[i].title %></td>
+									<td><%=reviews[i].content %></td>
+									<td class="text-center">										
+										<a href="/admin/DeleteReviewById/<%=reviews[i]._id %>" title="Delete '<%=reviews[i].title %>' Entry">
+											<i class="fa fa-remove"></i>
+										</a>
+									</td>
+								</tr>
+							<%}%>
+						</tbody>
+					</table>					
+				</div>
+			</section>
+		</div>
+	</div>
+	<% include partials/js %>
+	<script>
+		$(function() {
+			$('#example').DataTable({
+				responsive: true
+			});
+		});
+	</script>
+</body>
+</html>

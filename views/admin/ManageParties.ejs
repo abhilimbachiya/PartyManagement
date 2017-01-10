@@ -17,7 +17,7 @@
 				<div class="tbl">
 					<div class="tbl-row">
 						<div class="tbl-cell">
-							<h3>Manage Parties</h3>							
+							<h5>MANAGE PARTIES</h5>
 							<ol class="breadcrumb breadcrumb-simple">
 								<li><a href="#">Home</a></li>
 								<li class="active">Manage Parties</li>								
@@ -30,25 +30,18 @@
 				</div>				
 			</header>
 			<section class="card">
-				<div class="card-block">
-					<div id="example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-					<div class="row"><div class="col-sm-6"><div class="dataTables_length" id="example_length">
-					<label>Show <select name="example_length" aria-controls="example" class="form-control input-sm">
-					<option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div>
-					</div><div class="col-sm-6 text-right"><div class="dataTables_filter">
-					<label>Search: <input type="search" class="form-control input-sm" placeholder="" aria-controls="example"></label>
-					</div></div></div>
-					<div class="row">
-					<div class="col-sm-12">
-					<table id="example" class="display table table-bordered dataTable dtr-inline" cellspacing="0" width="100%" role="grid" aria-describedby="example_info" style="width: 100%;margin-top:1%;">
+				<div class="card-block">					
+					<table id="example" class="display table table-bordered" cellspacing="0" width="100%" style="width: 100%;margin-top:1%;">
 						<thead>
 						<tr role="row">
 							<th class="sorting_asc">Title</th>
 							<th class="sorting_asc">Image</th>
+							<th class="sorting_asc">Category</th>
 							<th class="sorting">Duration(Hours)</th>
 							<th class="sorting">Price($)</th>
 							<th class="sorting">Location</th>
-							<th colspan="2" class="sorting text-center">Actions</th>
+							<th class="sorting">Reviews</th>
+							<th style="width:70px !important" class="sorting text-center">Actions</th>
 						</tr>
 						</thead>						
 						<tbody>						
@@ -56,23 +49,37 @@
 								<tr>
 									<td><%=_p[i].title %></td>
 									<td><img src="<%=_p[i].getImageUrl() %>" height="50"></td>
-									<!--<td><%=_p[i].starttime %> / <%=_p[i].endtime %></td>-->
+									<td><%=_p[i].category.name %></td>
 									<td><%=_p[i].duration %></td>
 									<td><%=_p[i].price %></td>
 									<td><%=_p[i].location %></td>
-									<td class="text-center"><a href="/admin/editPartyInfo/<%=_p[i]._id %>" style="text-decoration:none !important;"><i class="fa fa-edit"></a></td>
-									<td class="text-center"><a href="/admin/deletePartyInfo/<%=_p[i]._id %>" id="deleteThis_<%=_p[i]._id %>" data-id="<%=_p[i]._id %>" style="text-decoration:none !important;"><i class="fa fa-remove"></a></td>
+									<td><%=_p[i].reviews.length%></td>
+									<td class="text-center">
+										<a href="/admin/editPartyInfo/<%=_p[i]._id %>" title="Edit '<%=_p[i].title %>' Entry">
+											<i class="fa fa-edit"></i>
+										</a>&nbsp;|&nbsp;
+										<a href="/admin/deletePartyInfo/<%=_p[i]._id %>" title="Delete '<%=_p[i].title %>' Entry">
+											<i class="fa fa-remove"></i>
+										</a>&nbsp;|&nbsp;
+										<a href="/admin/ManageReviews/<%=_p[i]._id %>" title="Watch '<%=_p[i].title %>' Reviews">
+											<i class="fa fa-star"></i>
+										</a>
+									</td>
 								</tr>
 							<%}%>
 						</tbody>
-					</table>
-					</div>
-					</div>					
-					</div>
+					</table>					
 				</div>
 			</section>
 		</div>
 	</div>
 	<% include partials/js %>
+	<script>
+		$(function() {
+			$('#example').DataTable({
+				responsive: true
+			});
+		});
+	</script>
 </body>
 </html>

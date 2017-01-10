@@ -2,7 +2,7 @@
 
 <html lang="en-US">
 <head>
-    <title>Create Party</title>
+    <title><%= party.title %></title>
     <%- include('../includes/head'); %>
 </head>
 
@@ -152,7 +152,7 @@
                             <div class="content">
                                 <div class="vertical-aligned-elements">
                                     <div class="element"><img src="/assets/img/logo.png" alt=""></div>
-                                    <div class="element text-align-right"><a href="#" class="btn btn-primary btn-rounded btn-xs">Claim</a></div>
+                                    <div class="element text-align-right"><a href="/parties/<%= party.id %>/checkout" class="btn btn-primary btn-rounded btn-xs">Claim</a></div>
                                 </div>
                                 <hr>
                                 <address>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+    <title>My Party Reservations</title>
+    <%- include('../includes/head'); %>
+</head>
+
+<body>
+
+<%- include('../includes/header'); %>
+
+<div id="page-content">
+        <div class="container">
+            <!--end breadcrumb-->
+            <section class="page-title">
+                <h1>My Party Reservations</h1>
+            </section>
+            <!--end page-title-->
+            <section>
+                <div class="my-items table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Party</th>
+                            <!-- <th>Featured</th> -->
+                            <th>Transaction Reference</th>
+                            <th>Reviews</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <% reservations.forEach(function(reservation) { %>
+                        <tr class="my-item">
+                            <td>
+                                <div class="image-wrapper">
+                                    <!-- <div class="circle" data-toggle="tooltip" data-placement="right" title="Top Listing"><i class="fa fa-thumbs-up"></i></div> -->
+                                    <a href="/parties/<%= reservation.party.id %>" class="image">
+                                        <div class="bg-transfer">
+                                            <img src="<%= reservation.party.getImageUrl() %>">
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="info">
+                                    <a href="/parties/<%= reservation.party.id %>"><h2><%= reservation.party.title %></h2></a>
+                                    <figure class="location"><%= reservation.party.location %></figure>
+                                    <% if (reservation.party.category) { %>
+                                    <figure class="label label-info"><%= reservation.party.category.name %></figure>
+                                    <% } %>
+                                    <div class="additional-info">
+                                        <!-- <span><i class="fa fa-bed"></i>12</span> -->
+                                        <span class="price-info"><span class="price">$<%= reservation.party.price %></span></span>
+                                    </div>
+                                    <!--end additional-info-->
+                                </div>
+                                <!--end info-->
+                            </td>
+                            <!-- <td><div class="featured yes"><i class="fa fa-check"></i><aside></aside></div></td> -->
+                            <td><%= reservation.transaction_reference %></td>
+                            <td class="reviews">45</td>
+                        </tr>
+                        <!--end my-item-->
+                        <% }); %>
+                        
+                        </tbody>
+                    </table>
+                </div>
+                <!--end my-items-->
+            </section>
+        <!--end container-->
+    </div>
+    <!--end page-content-->
+
+<%- include('../includes/foot'); %>
+
+</body>
+

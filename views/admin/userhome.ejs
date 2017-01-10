@@ -18,61 +18,90 @@
 	<div class="page-content">
 	    <div class="container-fluid">
 	        <div class="row">	           
-	            <div class="col-xl-6">
+	            <div class="col-xl-12">
 	                <div class="row">
-	                    <div class="col-sm-6">
-	                        <article class="statistic-box red">
-	                            <div>
-	                                <div class="number">26</div>
-	                                <div class="caption"><div>Open tickets</div></div>
-	                                <div class="percent">
-	                                    <div class="arrow up"></div>
-	                                    <p>15%</p>
-	                                </div>
-	                            </div>
-	                        </article>
-	                    </div><!--.col-->
-	                    <div class="col-sm-6">
-	                        <article class="statistic-box purple">
-	                            <div>
-	                                <div class="number">12</div>
-	                                <div class="caption"><div>Closes tickets</div></div>
-	                                <div class="percent">
-	                                    <div class="arrow down"></div>
-	                                    <p>11%</p>
-	                                </div>
-	                            </div>
-	                        </article>
-	                    </div><!--.col-->
-	                    <div class="col-sm-6">
-	                        <article class="statistic-box yellow">
-	                            <div>
-	                                <div class="number">104</div>
-	                                <div class="caption"><div>New clients</div></div>
-	                                <div class="percent">
-	                                    <div class="arrow down"></div>
-	                                    <p>5%</p>
-	                                </div>
-	                            </div>
-	                        </article>
-	                    </div><!--.col-->
-	                    <div class="col-sm-6">
+	                    <div class="col-sm-2">
 	                        <article class="statistic-box green">
 	                            <div>
-	                                <div class="number">29</div>
-	                                <div class="caption"><div>Here is an example of a long name</div></div>
-	                                <div class="percent">
-	                                    <div class="arrow up"></div>
-	                                    <p>84%</p>
-	                                </div>
+	                                <div class="number">
+										<%=_total_no_of_admins%>
+									</div>
+	                                <div class="caption">
+										<div>Total Admins</div>
+									</div>
 	                            </div>
 	                        </article>
-	                    </div><!--.col-->
-	                </div><!--.row-->
-	            </div><!--.col-->
-	        </div><!--.row-->
-	
-	        <div class="row">
+	                    </div>
+	                    <div class="col-sm-2">
+	                        <article class="statistic-box green">
+	                            <div>
+	                                <div class="number">
+										<%=_total_no_of_users%>
+									</div>
+	                                <div class="caption">
+										<div>Total Users</div>
+									</div>
+	                            </div>
+	                        </article>
+	                    </div>
+	                    <div class="col-sm-2">
+	                        <article class="statistic-box green">
+	                            <div>
+	                                <div class="number">
+										<%=_total_no_of_reviews%>
+									</div>
+	                                <div class="caption">
+										<div>Total Reviews</div>
+									</div>	                               
+	                            </div>
+	                        </article>
+	                    </div>
+	                    <div class="col-sm-2">
+	                        <article class="statistic-box green">
+	                            <div>
+	                                <div class="number">
+										<%=_total_no_of_parties%>
+									</div>
+	                                <div class="caption">
+										<div>Total Parties</div>
+									</div>
+	                            </div>
+	                        </article>
+	                    </div>
+						<div class="col-sm-2">
+	                        <article class="statistic-box green">
+	                            <div>
+	                                <div class="number">
+										<%=_total_no_of_reservation.length%>
+									</div>
+	                                <div class="caption">
+										<div>Total Reservations</div>
+									</div>
+	                            </div>
+	                        </article>
+	                    </div>						
+	                </div>
+	            </div>
+	        </div>				
+			<div class="row">	           
+	            <div class="col-xl-12">
+	                <div class="row">	                    	                    	                    						
+						<div class="col-sm-4">
+	                        <article class="statistic-box green">
+	                            <div>
+	                                <div class="number">
+										$ <%=_total_reservation_amount%>
+									</div>
+	                                <div class="caption">
+										<div>Total Revenue</div>
+									</div>
+	                            </div>
+	                        </article>
+	                    </div>						
+	                </div>
+	            </div>
+	        </div>				
+	        <!--<div class="row">
 	            <div class="col-xl-6 dahsboard-column">
 	                <section class="box-typical box-typical-dashboard panel panel-default scrollable">
 	                    <header class="box-typical-header panel-heading">
@@ -159,8 +188,8 @@
 	                                <td class="color-blue-grey" nowrap align="center">23th May</td>
 	                            </tr>
 	                        </table>
-	                    </div><!--.box-typical-body-->
-	                </section><!--.box-typical-dashboard-->
+	                    </div>
+	                </section>
 	                <section class="box-typical box-typical-dashboard panel panel-default scrollable">
 	                    <header class="box-typical-header panel-heading">
 	                        <h3 class="panel-title">Comments</h3>
@@ -193,14 +222,7 @@
 	                                </a>
 	                                <a href="#">
 	                                    <i class="font-icon font-icon-re"></i>
-	                                </a>
-	                                <!--Реализация кнопками-->
-	                                <!--<button type="button" class="star">-->
-	                                <!--<i class="font-icon font-icon-star"></i>-->
-	                                <!--</button>-->
-	                                <!--<button type="button">-->
-	                                <!--<i class="font-icon font-icon-re"></i>-->
-	                                <!--</button>-->
+	                                </a>	                          
 	                            </div>
 	                        </article>
 	                        <article class="comment-item">
@@ -230,19 +252,12 @@
 	                                </a>
 	                                <a href="#">
 	                                    <i class="font-icon font-icon-re"></i>
-	                                </a>
-	                                <!--Реализация кнопками-->
-	                                <!--<button type="button" class="star">-->
-	                                <!--<i class="font-icon font-icon-star"></i>-->
-	                                <!--</button>-->
-	                                <!--<button type="button">-->
-	                                <!--<i class="font-icon font-icon-re"></i>-->
-	                                <!--</button>-->
+	                                </a>	                                
 	                            </div>
 	                        </article>
-	                    </div><!--.box-typical-body-->
+	                    </div>
 	                </section>
-	            </div><!--.col-->
+	            </div>
 	            <div class="col-xl-6 dahsboard-column">
 	                <section class="box-typical box-typical-dashboard panel panel-default scrollable">
 	                    <header class="box-typical-header panel-heading">
@@ -289,8 +304,8 @@
 	                                <td nowrap align="center">23th May</td>
 	                            </tr>
 	                        </table>
-	                    </div><!--.box-typical-body-->
-	                </section><!--.box-typical-dashboard-->
+	                    </div>
+	                </section>
 	                <section class="box-typical box-typical-dashboard panel panel-default scrollable">
 	                    <header class="box-typical-header panel-heading">
 	                        <h3 class="panel-title">Contacts</h3>
@@ -429,7 +444,7 @@
 	                    </div>
 	                </section>
 	            </div>
-	        </div>
+	        </div>-->
 	    </div>
 	</div>	
 	<% include partials/js %>
