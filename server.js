@@ -13,7 +13,7 @@ var path = require('path');                                                     
 var multer = require('multer');                                                             //for disk storage management
 
 var configDb = require('./config/database.js');                                             // include db file connection
-var port = process.env.port || 5959;                                                        //Initialize port for currently running application
+var port = process.env.PORT || 5959;                                                        //Initialize port for currently running application
 mongoos.connect(configDb.url);                                                              // connect mongo db using mongoose
 app.set('view engine', 'ejs');                                                              // Set view engine for view layout using express framework
 app.use(morgan('dev'));                                                                     // Make in use morgan for logger
