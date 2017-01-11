@@ -73,7 +73,7 @@ function heroMap(_latitude,_longitude, element, markerTarget, sidebarResultTarge
         var markerCluster;
 
         function placeMarkers(markers){
-
+console.log(markers);
             newMarkers = [];
 
             for (i = 0; i < markers.length; i++) {
@@ -345,7 +345,6 @@ function heroMap(_latitude,_longitude, element, markerTarget, sidebarResultTarge
                 resultsArray = [];
                 visibleMarkersId = [];
                 visibleMarkersOnMap = [];
-
                 for (var i = 0; i < newMarkers.length; i++) {
                     if ( map.getBounds().contains(newMarkers[i].getPosition()) ){
                         visibleMarkersOnMap.push(newMarkers[i]);

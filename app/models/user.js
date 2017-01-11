@@ -13,6 +13,7 @@ var userSchema = mongoose.Schema({
         twitter_url: String,
         pinterest_url: String,
         youtube_url: String,
+        avatar: {},
     },
     facebook: {
         id: String,
@@ -38,10 +39,10 @@ userSchema.methods.validPassword = function (password) {
 
 userSchema.methods.getAvatarUrl = function getImageUrl ()
 {
-    if(this.avatar.length)
-        return '/uploads/users/avatars/' + this.avatar;
-
-    return '/assets/images/placeholders/user.jpeg';
+    if(this.local.avatar)
+        return '/' + this.local.avatar.destination + '/' + this.local.avatar.filename;
+    
+    return '/assets/images/placeholders/user.jpg';
 };
 
 module.exports = mongoose.model('users', userSchema);

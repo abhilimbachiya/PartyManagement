@@ -10,7 +10,6 @@ var partySchema = mongoose.Schema({
     latitude: String,
     longitude: String,
     contact_no: Number,
-    price: Number,
     email: String,
     website: String,
     video_url: String,

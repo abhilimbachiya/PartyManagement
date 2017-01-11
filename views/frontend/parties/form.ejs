@@ -41,6 +41,11 @@
                                     <label for="price">Price</label>
                                     <input type="number" class="form-control" name="price" id="price" placeholder="Price" value="<%= party.price %>">
                                 </div>
+
+                                <div class="form-group">
+                                    <label for="duration">Duration (in hours)</label>
+                                    <input type="number" class="form-control" name="duration" id="duration" placeholder="Duration" value="<%= party.duration %>">
+                                </div>
                                 <!--end form-group-->
                             </section>
                             <section>
@@ -94,16 +99,25 @@
                             </section>
                             <section>
                                 <h3>Gallery</h3>
+                                <% if(party.images) { %>
+                                <div class="row">
+                                    <% party.images.forEach(function(image) { %>
+                                    <div class="col-md-3">
+                                        <div class="row">
+                                            <img src="<%= '/' + image.destination + '/' + image.filename %>" height="80">
+                                        </div>
+                                        <div class="row">
+                                            <a href="/" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
+                                        </div>
+                                    </div>
+                                    <% }); %>
+                                </div>
+                                <% } %>
                                 <div class="file-upload-previews"></div>
                                 <div class="file-upload">
                                     <input type="file" name="images[]" class="file-upload-input with-preview" multiple title="Click to add files" maxlength="10" accept="gif|jpg|png">
                                     <span>Click or drag images here</span>
                                 </div>
-                                <div class="form-group">
-                                    <label for="video">Video URL</label>
-                                    <input type="text" class="form-control" name="video_url" id="video" placeholder="http://" value="<%= party.video_url %>">
-                                </div>
-                                <!--end form-group-->
                             </section>
                             <section>
                                 <h3>Social</h3>

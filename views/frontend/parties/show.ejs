@@ -67,12 +67,14 @@
                         <% reviews.forEach(function(review) { %>
                         <div class="review">
                             <div class="image">
-                                <div class="bg-transfer"><img src="assets/img/person-02.jpg" alt=""></div>
+                                <div class="bg-transfer">
+                                    <img src="<%= review.user.getAvatarUrl() %>">
+                                </div>
                             </div>
                             <div class="description">
                                 <h4><%= review.user.local.name %></h4>
                                 <figure>
-                                    <div class="rating-passive" data-rating="4">
+                                    <div class="rating-passive" data-rating="<%= review.rating %>">
                                         <span class="stars"></span>
                                         <span class="reviews">6</span>
                                     </div>
@@ -119,16 +121,7 @@
                                             </div>
                                             <!--end title-->
                                             <dl class="visitor-rating">
-                                                <dt>Comfort</dt>
-                                                <dd class="star-rating active" data-name="comfort"></dd>
-                                                <dt>Location</dt>
-                                                <dd class="star-rating active" data-name="location"></dd>
-                                                <dt>Facilities</dt>
-                                                <dd class="star-rating active" data-name="facilities"></dd>
-                                                <dt>Quality of listing</dt>
-                                                <dd class="star-rating active" data-name="staff"></dd>
-                                                <dt>Value for money</dt>
-                                                <dd class="star-rating active" data-name="value"></dd>
+                                                <dd class="star-rating active" data-name="rating"></dd>
                                             </dl>
                                         </div>
                                         <!--end col-md-4-->
@@ -199,10 +192,12 @@
 <%- include('../includes/foot'); %>
 <script>
     rating(".visitor-rating");
+    <% if(party.latitude > 0){ %>;
     var _latitude = <%= party.latitude %>;
     var _longitude = <%= party.longitude %>;
     var element = "map-detail";
     simpleMap(_latitude,_longitude, element);
+    <% } %>
 </script>
 
 </body>

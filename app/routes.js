@@ -118,23 +118,30 @@ module.exports = function (app, passport) {
         failureFlash: true
     }));
 
-     app.get("/settings", function (req, res) {
+    var userAvatarStorage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, './public/uploads/users/avatars/')
+        },
+        filename: function (req, file, cb) {
+            crypto.pseudoRandomBytes(16, function (err, raw) {
+              cb(null, raw.toString('hex') + Date.now() + '.' + mime.extension(file.mimetype));
+          });
+        }
+    });
+
+    var userAvatarUpload = multer({ storage: userAvatarStorage })
+
+    app.get("/settings", isLoggedIn, function (req, res) {
         res.render('frontend/settings');
     });
 
-    app.post("/settings", isLoggedIn, function (req, res) {
+    app.post("/settings", isLoggedIn, userAvatarUpload.any(), function (req, res) {
         User.findOne({ _id: req.user.id }, function (err, user) {
-            // if (req.files.length > 0) {
-            //     var avatar = req.files[0].path;
-            // }
-            // if (user != null) {
-            //     if (user.local.avatar == null) {
-            //         user.local.avatar = "";
-            //     } else {
-            //         user.local.avatar = avatar;
-            //     }
-            // }
             user.local.name = req.body.name;
+
+            if(req.files[0])
+                user.local.avatar = req.files[0];
+            
             user.local.phone = req.body.phone;
             user.local.about = req.body.about;
             user.local.email = req.body.email;
@@ -157,15 +164,15 @@ module.exports = function (app, passport) {
     });
 
     var partyImagesStorage = multer.diskStorage({
-      destination: function (req, file, cb) {
-        cb(null, './public/uploads/parties/images/')
-    },
-    filename: function (req, file, cb) {
-        crypto.pseudoRandomBytes(16, function (err, raw) {
-          cb(null, raw.toString('hex') + Date.now() + '.' + mime.extension(file.mimetype));
-      });
-    }
-});
+        destination: function (req, file, cb) {
+            cb(null, './public/uploads/parties/images/')
+        },
+        filename: function (req, file, cb) {
+            crypto.pseudoRandomBytes(16, function (err, raw) {
+              cb(null, raw.toString('hex') + Date.now() + '.' + mime.extension(file.mimetype));
+          });
+        }
+    });
 
     var partyImagesUpload = multer({ storage: partyImagesStorage })
 
@@ -176,6 +183,7 @@ module.exports = function (app, passport) {
         party.title = req.body.title;
         party.description = req.body.description;
         party.price = req.body.price;
+        party.duration = req.body.duration;
         party.location = req.body.location;
         party.latitude = req.body.latitude;
         party.longitude = req.body.longitude;
@@ -207,7 +215,7 @@ module.exports = function (app, passport) {
     app.get("/parties/:id/edit", isLoggedIn, function (req, res) {
         Category.find({}, function (err, categories) {
             Party.findOne({user_id: req.user.id}).populate('category').exec(function (err, party) {
-                res.render('frontend/parties/create', {
+                res.render('frontend/parties/edit', {
                     party: party,
                     categories: categories
                 });
@@ -222,10 +230,20 @@ module.exports = function (app, passport) {
             party.title = req.body.title;
             party.description = req.body.description;
             party.price = req.body.price;
+            party.duration = req.body.duration;
             party.location = req.body.location;
             party.latitude = req.body.latitude;
             party.longitude = req.body.longitude;
-            party.images = req.files;
+
+            if(req.files.length > 0){
+                if(party.images){
+                    party.images = party.images.concat(req.files);
+                }
+                else{
+                    party.images = req.files;
+                }
+            }
+
             party.contact_no = req.body.contact_no;
             party.email = req.body.email;
             party.website = req.body.website;
@@ -256,6 +274,7 @@ module.exports = function (app, passport) {
             review.party = party.id;
             review.title = req.body.title;
             review.content = req.body.content;
+            review.rating = req.body.score_rating;
             review.save();
             res.redirect('/parties/' + party.id);               
         });
