@@ -23,7 +23,7 @@
                         <thead>
                         <tr>
                             <th>Party</th>
-                            <!-- <th>Featured</th> -->
+                            <th>Chat</th>
                             <th>Transaction Reference</th>
                             <th>Reviews</th>
                         </tr>
@@ -54,6 +54,7 @@
                                 </div>
                                 <!--end info-->
                             </td>
+                            <td><a href="/reservations/<%= reservation.party.id %>/chat">Chat</a></td>
                             <!-- <td><div class="featured yes"><i class="fa fa-check"></i><aside></aside></div></td> -->
                             <td><%= reservation.transaction_reference %></td>
                             <td class="reviews">45</td>

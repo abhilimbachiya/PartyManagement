@@ -82,8 +82,8 @@ console.log(markers);
                 var markerContent = document.createElement('div');
                 var thumbnailImage;
 
-                if( markers[i]["marker_image"] != undefined ){
-                    thumbnailImage = markers[i]["marker_image"];
+                if( markers[i].images[0] != undefined ){
+                    thumbnailImage = '/' + markers[i].images[0].destination + '/' + markers[i].images[0].filename;
                 }
                 else {
                     thumbnailImage = "assets/img/items/default.png";

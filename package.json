@@ -26,6 +26,8 @@
     "path": "^0.12.7",
     "dotenv": "~1.2.0",
     "connect-flash": "~0.1.1",
-    "express-session": "~1.12.1"
+    "express-session": "~1.12.1",
+    "gravatar": "~1.0.6",
+    "socket.io": "1.0.6"
   }
 }

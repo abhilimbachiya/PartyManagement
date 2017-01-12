@@ -13,7 +13,7 @@ var path = require('path');                                                     
 var multer = require('multer');                                                             //for disk storage management
 
 var configDb = require('./config/database.js');                                             // include db file connection
-var port = process.env.port || 5959;                                                        //Initialize port for currently running application
+var port = process.env.PORT || 5959;                                                        //Initialize port for currently running application
 mongoos.connect(configDb.url);                                                              // connect mongo db using mongoose
 app.set('view engine', 'ejs');                                                              // Set view engine for view layout using express framework
 app.use(morgan('dev'));                                                                     // Make in use morgan for logger
@@ -35,6 +35,7 @@ app.use(passport.initialize());                                                 
 app.use(passport.session());                                                                // use passport session 
 app.use(flash());
 
-require('./app/routes.js')(app, passport);                                                  //initialize routing for api
 require('./config/passport')(passport);                                                     // Initialize passport for use authentication and sign up
-app.listen(port);                                                                           // Initialize application to declared port
+require('./app/routes.js')(app, passport);                                                  //initialize routing for api
+var io = require('socket.io').listen(app.listen(port));										// Initialize application to declared port
+require('./app/socket.js')(io);

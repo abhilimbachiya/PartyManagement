@@ -56,25 +56,26 @@ module.exports = function (app, passport) {
     });
 
     app.post("/api/parties/search/id", function (req, res) {
-        var query = Party.find()
-        if(req.body.markers)
-          query = query.where('_id').in(req.body.markers);
+        // var query = Party.find().populate('category');
+        // if(req.body.markers)
+        //   query = query.where('_id').in(req.body.markers);
 
-      query = query.exec(function (err, parties) {
-        res.render('frontend/parties/api_parties', {
-            parties: parties
-        });
-    });
-  });
-
-    app.post("/api/parties", function (req, res) {
         // if( req.body.keyword ) {
-        //     query = Party.find({title: new RegExp('^'+req.body.keyword+'$', "i")});
+        //     var titleRegex = new RegExp(req.body.keyword, 'i');
+        //     query = query.where('title').equals(titleRegex);
         // }
-
-        // else{
-            // var query = Party.find();
-        // }
+        // query = query.exec(function (err, parties) {
+        //     res.render('frontend/parties/api_parties', {
+        //         parties: parties
+        //     });
+        // });
+        var conditions = {};
+        if( req.body.keyword !== "" ) {
+            var titleRegex = new RegExp(req.body.keyword, 'i');
+            conditions["title"] = titleRegex;
+        }
+        // if(req.body.markers)
+        //   query = query.where('_id').in(req.body.markers);
 
         // if( req.body.min-price ) {
         //      query = query.where('price').lt(req.body.min-price);
@@ -88,7 +89,31 @@ module.exports = function (app, passport) {
         // query.exec( function (err, parties) {
         //     res.json(parties);
         // });
-        Party.find({}, function (err, parties) {
+        var query = Party.find(conditions).populate('category').exec(function (err, parties) {
+            res.json(parties);
+        });
+      });
+
+    app.post("/api/parties", function (req, res) {
+        var conditions = {};
+        if( req.body.keyword !== "" ) {
+            var titleRegex = new RegExp(req.body.keyword, 'i');
+            conditions["title"] = titleRegex;
+        }
+
+        // if( req.body.min-price ) {
+        //      query = query.where('price').lt(req.body.min-price);
+        // }
+
+        // if( req.body.category ) {
+            // query = Party.where('category').equals(req.body.category);
+        // }
+        // if( req.body.min-price !== "" ) {
+        // }
+        // query.exec( function (err, parties) {
+        //     res.json(parties);
+        // });
+        Party.find(conditions).populate('category').exec(function (err, parties) {
             res.json(parties);
         });
     });
@@ -117,6 +142,86 @@ module.exports = function (app, passport) {
         failureRedirect: '/signup',
         failureFlash: true
     }));
+
+    app.get("/forgot_password", function (req, res) {
+        res.render("forgot_password", { message: "" });
+    })
+    app.post("/forgot_password", function (req, res) {
+        var MailHtml = "";
+        User.findOne({ 'local.email': req.body.email }, function (err, _user_response) {
+            if (_user_response != null) {
+                MailHtml += "<html>";
+                MailHtml += "<head>";
+                MailHtml += "<title></title>";
+                MailHtml += "</head>";
+                MailHtml += "<body>";
+                MailHtml += "<p>Hello " + _user_response.local.email + "</p>";
+                MailHtml += "</br>";
+                MailHtml += "<p>Please, click on following link to reset the password : </p>";
+                MailHtml += "</br>";
+                MailHtml += "<a href='http://localhost:1337/admin/ResetPassword/" + _user_response._id + "' target='_blank'>http://localhost:1337/admin/ResetPassword/" + _user_response._id + "</a>";
+                MailHtml += "</br>";
+                MailHtml += "<p>Thank you.</p>";
+                MailHtml += "</body>";
+                MailHtml += "</html>";
+
+                var mailoptions = {
+                    from: 'jaymin.webbleu@gmail.com',
+                    to: _user_response.local.email,
+                    subject: 'Reset Password',
+                    html: MailHtml
+                }
+                var transporter = nodemailer.createTransport({
+                    service: 'Gmail',
+                    auth: {
+                        user: 'jaymin.webbleu@gmail.com',
+                        pass: 'jaymin.123'
+                    }
+                });
+                transporter.sendMail(mailoptions, function (err, Info) {
+                    if (err) {
+                        res.render("forgot_password", { message: "Sorry, your mail does not sent!" });
+                    } else {
+                        res.render("forgot_password", { message: "Email sent successfully. Please check your inbox!" });
+                    }
+                })
+            } else {
+                res.render("forgot_password", { message: "Email does not exist" });
+            }
+        });
+    });
+
+    app.get("/reset_password/:id", function (req, res) {
+        User.findOne({ _id: req.params.id }, function (err, _user_response) {
+            res.render("admin/ResetPassword", {
+                _user: _user_response,
+                message: ""
+            });
+        })
+    })
+
+    app.post("/reset_password", function (req, res) {
+        if (req.body.confirm_password != req.body.password) {
+            User.findOne({ _id: req.body.user_id }, function (err, _user_response) {
+                res.render("admin/ResetPassword", {
+                    _user: _user_response,
+                    message: "Password does not match!"
+                });
+            })
+        } else {
+            User.findOne({ _id: req.body.user_id }, function (err, _user_response) {
+                if (_user_response != null) {
+                    var userSchema = new User();
+                    _user_response.local.password = userSchema.generateHash(req.body.password);
+                    _user_response.save();
+                    res.render("admin/ResetPassword", {
+                        _user: _user_response,
+                        message: "Your password changed successfully!"
+                    });
+                }
+            })
+        }
+    })
 
     var userAvatarStorage = multer.diskStorage({
         destination: function (req, file, cb) {
@@ -214,7 +319,7 @@ module.exports = function (app, passport) {
 
     app.get("/parties/:id/edit", isLoggedIn, function (req, res) {
         Category.find({}, function (err, categories) {
-            Party.findOne({user_id: req.user.id}).populate('category').exec(function (err, party) {
+            Party.findOne({user_id: req.user.id, _id: req.params.id}).populate('category').exec(function (err, party) {
                 res.render('frontend/parties/edit', {
                     party: party,
                     categories: categories
@@ -402,7 +507,17 @@ module.exports = function (app, passport) {
         });
     })
 
-    //ADMIN
+    app.get('/reservations/:id/chat', function(req,res){
+
+        // Render the chant.html view
+        res.render('frontend/reservations/chat', {
+            id: req.params.id
+        });
+    });
+
+    
+
+     //ADMIN
 
     app.addImage = function (image, callback) {
         Party.create(image, callback);
@@ -410,7 +525,7 @@ module.exports = function (app, passport) {
 
     var _storage = multer.diskStorage({
         destination: function (req, file, cb) {
-            cb(null, 'Uploads/admin/Party/background/');
+            cb(null, './public/uploads/parties/images/');
         },
         filename: function (req, file, cb) {
             cb(null, file.originalname);
@@ -422,21 +537,8 @@ module.exports = function (app, passport) {
         next();
     });
 
-    var _logo_storage = multer.diskStorage({
-        destination: function (req, file, cb) {
-            cb(null, 'Uploads/admin/Party/logo/');
-        },
-        logofilename: function (req, file, cb) {
-            cb(null, file.originalname);
-        }
-    })
-
     var upload = multer({
         storage: _storage
-    })
-
-    var logoupload = multer({
-        storage: _logo_storage
     })
 
     app.get("/admin/", function (req, res) {
@@ -448,7 +550,7 @@ module.exports = function (app, passport) {
     });
 
     app.get("/admin/ManageParties", function (req, res) {
-        Party.find({ user_id: req.user.id })
+        Party.find({})
             .populate('category')
             .populate('reviews')
             .exec(function (err, parties) {
@@ -558,7 +660,7 @@ module.exports = function (app, passport) {
         res.redirect('/admin/');
     });
 
-    function isLoggedIn(req, res, next) {
+    function isAdminLoggedIn(req, res, next) {
         if (req.isAuthenticated())
             return next();
         res.redirect('/admin/');
@@ -768,7 +870,7 @@ module.exports = function (app, passport) {
         res.render('admin/ChangePassword.ejs');
     });
     app.post("/admin/ChangePasswordInfo", upload.any(), function (req, res) {
-        var adminSchema = new Admin();
+        var adminSchema = new User();
         User.findOne({ _id: req.user._id }, function (err, _admin_ausers) {
             _admin_ausers.local.password = adminSchema.generateHash(req.body.password);
             _admin_ausers.save();
@@ -828,7 +930,7 @@ module.exports = function (app, passport) {
     });
 
     //-------------------------------------------------------------------------Manage Reviews------------------------------------------------------------
-    app.get("/admin/ManageReviews/:id", isLoggedIn, function (req, res) {
+    app.get("/admin/ManageReviews/:id", isAdminLoggedIn, function (req, res) {
         Party.findOne({ _id: req.params.id }, function (err, party) {
             Review.find({ party: req.params.id }).populate('user').exec(function (err, reviews) {
                 res.render('admin/ManageReviews', {
@@ -837,7 +939,7 @@ module.exports = function (app, passport) {
             });
         });
     });
-    app.get("/admin/DeleteReviewById/:id", isLoggedIn, function (req, res) {
+    app.get("/admin/DeleteReviewById/:id", isAdminLoggedIn, function (req, res) {
         Review.findOne({ _id: req.params.id }, function (err, _reviews) {
             if (_reviews != null) {
                 Review.remove({ _id: req.params.id }, function (err, done) {
@@ -847,7 +949,7 @@ module.exports = function (app, passport) {
         });
     });
     //-------------------------------------------------------------------------Manage Dashboard------------------------------------------------------------
-    app.get("/admin/userhome", isLoggedIn, function (req, res) {
+    app.get("/admin/userhome", isAdminLoggedIn, function (req, res) {
         User.find({}, function (err, _users_count) {
             Admin.find({}, function (err, _admins_count) {
                 Party.find({}, function (err, _parties_count) {
@@ -881,14 +983,96 @@ module.exports = function (app, passport) {
     })
     //------------------------------------------------------------Manage Reservations-----------------------------------------------------------------------
 
-    app.get("/admin/ListAllReservations", isLoggedIn, function (req, res) {
+    app.get("/admin/ListAllReservations", isAdminLoggedIn, function (req, res) {
         Reservation.find({})
             .populate('user')
             .populate('party')
-            .exec(function (err, reservation) {
+            .exec(function (err, reservation) {                
                 res.render('admin/ManageReservations', {
                     reservations: reservation
                 });
             });
     })
+
+    //----------------------------------------------------------Forgot password-------------------------------------------
+    app.get("/admin/ForgetPassword", function (req, res) {
+        res.render("admin/ForgetPassword", { message: "" });
+    })
+    app.post("/admin/GetPassword", function (req, res) {
+        var MailHtml = "";
+        User.findOne({ 'local.email': req.body.email }, function (err, _user_response) {
+            if (_user_response != null) {
+                MailHtml += "<html>";
+                MailHtml += "<head>";
+                MailHtml += "<title></title>";
+                MailHtml += "</head>";
+                MailHtml += "<body>";
+                MailHtml += "<p>Hello " + _user_response.local.email + "</p>";
+                MailHtml += "</br>";
+                MailHtml += "<p>Please, click on following link to reset the password : </p>";
+                MailHtml += "</br>";
+                MailHtml += "<a href='http://localhost:1337/admin/ResetPassword/" + _user_response._id + "' target='_blank'>http://localhost:1337/admin/ResetPassword/" + _user_response._id + "</a>";
+                MailHtml += "</br>";
+                MailHtml += "<p>Thank you.</p>";
+                MailHtml += "</body>";
+                MailHtml += "</html>";
+
+                var mailoptions = {
+                    from: 'jaymin.webbleu@gmail.com',
+                    to: _user_response.local.email,
+                    subject: 'Reset Password',
+                    html: MailHtml
+                }
+                var transporter = nodemailer.createTransport({
+                    service: 'Gmail',
+                    auth: {
+                        user: 'jaymin.webbleu@gmail.com',
+                        pass: 'jaymin.123'
+                    }
+                });
+                transporter.sendMail(mailoptions, function (err, Info) {
+                    if (err) {
+                        res.render("admin/ForgetPassword", { message: "Sorry, your mail does not sent!" });
+                    } else {
+                        res.render("admin/ForgetPassword", { message: "Email sent successfully. Please check your inbox!" });
+                    }
+                })
+            } else {
+                res.render("admin/ForgetPassword", { message: "Email does not exist" });
+            }
+        });
+    });
+
+    app.get("/admin/ResetPassword/:id", function (req, res) {
+        User.findOne({ _id: req.params.id }, function (err, _user_response) {
+            res.render("admin/ResetPassword", {
+                _user: _user_response,
+                message: ""
+            });
+        })
+    })
+
+    app.post("/admin/Change_or_reset_password", function (req, res) {
+        if (req.body.confirm_password != req.body.password) {
+            User.findOne({ _id: req.body.user_id }, function (err, _user_response) {
+                res.render("admin/ResetPassword", {
+                    _user: _user_response,
+                    message: "Password does not match!"
+                });
+            })
+        } else {
+            User.findOne({ _id: req.body.user_id }, function (err, _user_response) {
+                if (_user_response != null) {
+                    var userSchema = new User();
+                    _user_response.local.password = userSchema.generateHash(req.body.password);
+                    _user_response.save();
+                    res.render("admin/ResetPassword", {
+                        _user: _user_response,
+                        message: "Your password changed successfully!"
+                    });
+                }
+            })
+        }
+    })
+
 }

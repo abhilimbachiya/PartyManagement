@@ -249,7 +249,20 @@
 				todayHighlight: true,
 				todayBtn: 'linked',
 				keyboardNavigation: true,
-			});        
+			});   
+					
+			$('#starttime').bootstrapMaterialDatePicker
+			({
+				date: false,
+				shortTime: false,
+				format: 'HH:mm'
+			});							    
+			$('#endtime').bootstrapMaterialDatePicker
+			({
+				date: false,
+				shortTime: false,
+				format: 'HH:mm'
+			});							    
 		})
 	</script>
 	<script>
