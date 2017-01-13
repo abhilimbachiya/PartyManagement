@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var partySchema = mongoose.Schema({
-    user_id: String,
+    user_id: { type: String, ref: 'users' },
     category : { type: String, ref: 'categories' },
     reviews : [{ type: String, ref: 'reviews' }],
     title: String,

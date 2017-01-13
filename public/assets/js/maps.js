@@ -276,6 +276,7 @@ console.log(markers);
                     url: "/api/parties/" + id,
                     method: "GET",
                     success: function(results){
+                        console.log('results' + results);
                         $(".sidebar-wrapper").html(results);
                         $(".results-wrapper").removeClass("loading");
                         initializeOwl();

@@ -27,12 +27,10 @@
 
 		<!-- These elements are displayed as white info cards in the middle of the screen -->
 
-		<!-- <div class="connected">
-
-			<img src="../img/unnamed.jpg" id="creatorImage" />
+		<div class="connected">
 
 			<div class="infoConnected">
-				<h2>Who are you?</h2>
+				<h2><span class="nickname-left"></span></h2>
 				<br/>
 
 				<form class="loginForm">
@@ -43,9 +41,9 @@
 
 			</div>
 
-		</div> -->
+		</div>
 
-		<!-- <div class="personinside">
+		<div class="personinside">
 
 			<img src="../img/unnamed.jpg" id="ownerImage" />
 
@@ -61,11 +59,11 @@
 
 			</div>
 
-		</div> -->
+		</div>
 
 		<div class="invite-textfield">
 
-			<h2>Oops, there is no one online in this chat!</h2>
+			<h2>Oops, <%= other_user.local.name %> is no one online in this chat!</h2>
 
 		</div>
 
@@ -140,10 +138,10 @@ $(function(){
 		friend = "";
 
 	// cache some jQuery objects
-	var section = $(".section"),
-		footer = $("footer"),
+	// var section = $(".section"),
+		// footer = $("footer"),
 		onConnect = $(".connected"),
-		inviteSomebody = $(".invite-textfield"),
+	inviteSomebody = $(".invite-textfield"),
 		personInside = $(".personinside"),
 		chatScreen = $(".chatscreen"),
 		left = $(".left"),
@@ -342,10 +340,10 @@ $(function(){
 
 		if(status === "connected"){
 
-			section.children().css('display', 'none');
-			onConnect.fadeIn(1200);
+			// section.children().css('display', 'none');
+			// onConnect.fadeIn(1200);
 
-				// inviteSomebody.fadeIn(1200);
+			inviteSomebody.fadeIn(1200);
 		}
 
 		else if(status === "inviteSomebody"){

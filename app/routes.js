@@ -43,15 +43,17 @@ module.exports = function (app, passport) {
     });
 
     app.get("/api/parties/:id", function (req, res) {
-     var query = Party.find({});
-     if( req.params.keyword !== "" ) {
+       var query = Party.find({});
+       if( req.params.keyword !== "" ) {
         query = query.where('title').equals(req.params.keyword);
     }
         // if( req.params.min-price !== "" ) {
         //      query = query.where('price').lt(req.params.min-price);
         // }
-        query.exec( function (err, parties) {
-            res.json(parties);
+        Party.findOne({ _id: req.params.id}).populate('category').exec(function (err, party) {
+            res.render('frontend/parties/api_party', {
+                party: party
+            });
         });
     });
 
@@ -89,10 +91,12 @@ module.exports = function (app, passport) {
         // query.exec( function (err, parties) {
         //     res.json(parties);
         // });
-        var query = Party.find(conditions).populate('category').exec(function (err, parties) {
-            res.json(parties);
+        var query = Party.find().populate('category').exec(function (err, parties) {
+            res.render('frontend/parties/api_parties', {
+                parties: parties
+            });
         });
-      });
+    });
 
     app.post("/api/parties", function (req, res) {
         var conditions = {};
@@ -113,7 +117,7 @@ module.exports = function (app, passport) {
         // query.exec( function (err, parties) {
         //     res.json(parties);
         // });
-        Party.find(conditions).populate('category').exec(function (err, parties) {
+        Party.find().populate('category').exec(function (err, parties) {
             res.json(parties);
         });
     });
@@ -399,13 +403,13 @@ module.exports = function (app, passport) {
     //PAYMENT
 
     var TRANSACTION_SUCCESS_STATUSES = [
-      braintree.Transaction.Status.Authorizing,
-      braintree.Transaction.Status.Authorized,
-      braintree.Transaction.Status.Settled,
-      braintree.Transaction.Status.Settling,
-      braintree.Transaction.Status.SettlementConfirmed,
-      braintree.Transaction.Status.SettlementPending,
-      braintree.Transaction.Status.SubmittedForSettlement
+    braintree.Transaction.Status.Authorizing,
+    braintree.Transaction.Status.Authorized,
+    braintree.Transaction.Status.Settled,
+    braintree.Transaction.Status.Settling,
+    braintree.Transaction.Status.SettlementConfirmed,
+    braintree.Transaction.Status.SettlementPending,
+    braintree.Transaction.Status.SubmittedForSettlement
     ];
 
     function formatErrors(errors) {
@@ -414,55 +418,55 @@ module.exports = function (app, passport) {
       for (var i in errors) { // eslint-disable-line no-inner-declarations, vars-on-top
         if (errors.hasOwnProperty(i)) {
           formattedErrors += 'Error: ' + errors[i].code + ': ' + errors[i].message + '\n';
-        }
       }
-      return formattedErrors;
-    }
+  }
+  return formattedErrors;
+}
 
-    function createResultObject(transaction) {
+function createResultObject(transaction) {
+  var result;
+  var status = transaction.status;
+
+  if (TRANSACTION_SUCCESS_STATUSES.indexOf(status) !== -1) {
+    result = {
+      header: 'Sweet Success!',
+      icon: 'success',
+      message: 'Your test transaction has been successfully processed. See the Braintree API response and try again.'
+  };
+} else {
+    result = {
+      header: 'Transaction Failed',
+      icon: 'fail',
+      message: 'Your test transaction has a status of ' + status + '. See the Braintree API response and try again.'
+  };
+}
+
+return result;
+}
+
+app.get('/parties/:id/checkout', isLoggedIn, function (req, res) {
+    Party.findOne({ _id: req.params.id }).exec(function (err, party) {
+      gateway.clientToken.generate({}, function (err, response) {
+        res.render('frontend/parties/checkouts/new', {party: party, clientToken: response.clientToken, messages: req.flash('error')});
+    });
+  });
+});
+
+app.get('/parties/:id/checkouts/:id', isLoggedIn, function (req, res) {
+    Party.findOne({ _id: req.params.id }).exec(function (err, party) {
       var result;
-      var status = transaction.status;
+      var transactionId = req.params.id;
 
-      if (TRANSACTION_SUCCESS_STATUSES.indexOf(status) !== -1) {
-        result = {
-          header: 'Sweet Success!',
-          icon: 'success',
-          message: 'Your test transaction has been successfully processed. See the Braintree API response and try again.'
-        };
-      } else {
-        result = {
-          header: 'Transaction Failed',
-          icon: 'fail',
-          message: 'Your test transaction has a status of ' + status + '. See the Braintree API response and try again.'
-        };
-      }
-
-      return result;
-    }
-
-    app.get('/parties/:id/checkout', isLoggedIn, function (req, res) {
-        Party.findOne({ _id: req.params.id }).exec(function (err, party) {
-          gateway.clientToken.generate({}, function (err, response) {
-            res.render('frontend/parties/checkouts/new', {party: party, clientToken: response.clientToken, messages: req.flash('error')});
-          });
-      });
+      gateway.transaction.find(transactionId, function (err, transaction) {
+        result = createResultObject(transaction);
+        res.render('frontend/parties/checkouts/show', {party: party, transaction: transaction, result: result});
     });
+  });
+});
 
-    app.get('/parties/:id/checkouts/:id', isLoggedIn, function (req, res) {
-        Party.findOne({ _id: req.params.id }).exec(function (err, party) {
-          var result;
-          var transactionId = req.params.id;
-
-          gateway.transaction.find(transactionId, function (err, transaction) {
-            result = createResultObject(transaction);
-            res.render('frontend/parties/checkouts/show', {party: party, transaction: transaction, result: result});
-          });
-      });
-    });
-
-    app.post('/parties/:id/checkout', isLoggedIn, function (req, res) {
-        Party.findOne({ _id: req.params.id }).exec(function (err, party) {
-          var transactionErrors;
+app.post('/parties/:id/checkout', isLoggedIn, function (req, res) {
+    Party.findOne({ _id: req.params.id }).exec(function (err, party) {
+      var transactionErrors;
           var amount = party.price; // In production you should not take amounts directly from clients
           var nonce = req.body.payment_method_nonce;
 
@@ -471,55 +475,63 @@ module.exports = function (app, passport) {
             paymentMethodNonce: nonce,
             options: {
               submitForSettlement: true
-            }
-          }, function (err, result) {
-            if (result.success || result.transaction) {
-                var partyReservation = new Reservation;
-                  partyReservation.user = req.user.id;
-                  partyReservation.party = party.id;
-                  partyReservation.transaction_reference = result.transaction.id;
-                  partyReservation.price = party.price;
-                  partyReservation.save();
+          }
+      }, function (err, result) {
+        if (result.success || result.transaction) {
+            var partyReservation = new Reservation();
+            partyReservation.user = req.user.id;
+            partyReservation.party = party.id;
+            partyReservation.transaction_reference = result.transaction.id;
+            partyReservation.price = party.price;
+            partyReservation.save();
 
-              res.redirect('/reservations');
-            } else {
-              transactionErrors = result.errors.deepErrors();
-              req.flash('error', {msg: formatErrors(transactionErrors)});
-              res.redirect('/parties/' + party.id + '/checkout');
-            }
-          });
+            res.redirect('/reservations');
+        } else {
+          transactionErrors = result.errors.deepErrors();
+          req.flash('error', {msg: formatErrors(transactionErrors)});
+          res.redirect('/parties/' + party.id + '/checkout');
+      }
+  });
       });
-    });
+});
 
     //END PAYMENT
 
-     app.get("/reservations", isLoggedIn , function (req, res) {
+    app.get("/reservations", isLoggedIn , function (req, res) {
         Reservation.find({ user: req.user.id }).populate({ 
-             path: 'party',
-             populate: {
-               path: 'category',
-               model: 'categories'
-             } 
-          }).exec(function (err, reservations) {
+           path: 'party',
+            populate: {
+                path: 'category',
+                model: 'categories'
+            } 
+         }).exec(function (err, reservations) {
             res.render('frontend/reservations/index', {
                 reservations: reservations
             });
         });
-    })
+     })
 
-    app.get('/reservations/:id/chat', function(req,res){
-
-        // Render the chant.html view
-        res.render('frontend/reservations/chat', {
-            id: req.params.id
+    app.get('/reservations/:id/chat', isLoggedIn, function(req,res){
+        Reservation.findOne().exec(function (err, reservation) {
+            if(req.user.id == reservation.user){
+                var other_user = reservation.party.user_id;
+            }
+            else{
+                var other_user = req.user;
+            }
+            res.render('frontend/reservations/chat', {
+                reservation: reservation,
+                other_user: other_user,
+                id: req.params.id
+            });
         });
-    });
+     });
 
     
 
      //ADMIN
 
-    app.addImage = function (image, callback) {
+     app.addImage = function (image, callback) {
         Party.create(image, callback);
     }
 
@@ -551,13 +563,13 @@ module.exports = function (app, passport) {
 
     app.get("/admin/ManageParties", function (req, res) {
         Party.find({})
-            .populate('category')
-            .populate('reviews')
-            .exec(function (err, parties) {
-                res.render('admin/ManageParties', {
-                    _p: parties,
-                });
-            })
+        .populate('category')
+        .populate('reviews')
+        .exec(function (err, parties) {
+            res.render('admin/ManageParties', {
+                _p: parties,
+            });
+        })
     });
 
     app.get("/admin/editPartyInfo/:id", function (req, res) {
@@ -956,24 +968,24 @@ module.exports = function (app, passport) {
                     Review.find({}, function (err, _reviews_count) {
                         Reservation.find({}, function (err, _reservation_count) {
                             Reservation.aggregate([
+                            {
+                                $group:
                                 {
-                                    $group:
-                                    {
-                                        _id: "",
-                                        totalAmount: {
-                                            $sum: { $multiply: ["$price"] }
-                                        }
+                                    _id: "",
+                                    totalAmount: {
+                                        $sum: { $multiply: ["$price"] }
                                     }
-                                }], function (err, sum) {
-                                    res.render('admin/userhome', {
-                                        _total_no_of_admins: _admins_count.length,
-                                        _total_no_of_users: _users_count.length,
-                                        _total_no_of_reviews: _reviews_count.length,
-                                        _total_no_of_parties: _parties_count.length,
-                                        _total_no_of_reservation: _reservation_count,
-                                        _total_reservation_amount: sum[0].totalAmount
-                                    })
-                                });
+                                }
+                            }], function (err, sum) {
+                                res.render('admin/userhome', {
+                                    _total_no_of_admins: _admins_count.length,
+                                    _total_no_of_users: _users_count.length,
+                                    _total_no_of_reviews: _reviews_count.length,
+                                    _total_no_of_parties: _parties_count.length,
+                                    _total_no_of_reservation: _reservation_count,
+                                    _total_reservation_amount: sum[0].totalAmount
+                                })
+                            });
                         })
                     })
                 })
@@ -985,13 +997,13 @@ module.exports = function (app, passport) {
 
     app.get("/admin/ListAllReservations", isAdminLoggedIn, function (req, res) {
         Reservation.find({})
-            .populate('user')
-            .populate('party')
-            .exec(function (err, reservation) {                
-                res.render('admin/ManageReservations', {
-                    reservations: reservation
-                });
+        .populate('user')
+        .populate('party')
+        .exec(function (err, reservation) {                
+            res.render('admin/ManageReservations', {
+                reservations: reservation
             });
+        });
     })
 
     //----------------------------------------------------------Forgot password-------------------------------------------
