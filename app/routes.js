@@ -2,6 +2,7 @@
 var Party = require('../app/models/party');
 var Review = require('../app/models/review');
 var Reservation = require('../app/models/reservation');
+var Chat = require('../app/models/chat');
 var Admin = require('../app/models/admins');
 var Category = require("../app/models/category")
 var multer = require('multer');
@@ -16,9 +17,9 @@ var mime = require('mime');
 module.exports = function (app, passport) {
 
     app.use(function(req, res, next) {
-      res.locals.user = req.user;
-      next();
-  });
+        res.locals.user = req.user;
+        next();
+    });
 
     function isLoggedIn(req, res, next) {
         if (req.isAuthenticated())
@@ -43,13 +44,6 @@ module.exports = function (app, passport) {
     });
 
     app.get("/api/parties/:id", function (req, res) {
-       var query = Party.find({});
-       if( req.params.keyword !== "" ) {
-        query = query.where('title').equals(req.params.keyword);
-    }
-        // if( req.params.min-price !== "" ) {
-        //      query = query.where('price').lt(req.params.min-price);
-        // }
         Party.findOne({ _id: req.params.id}).populate('category').exec(function (err, party) {
             res.render('frontend/parties/api_party', {
                 party: party
@@ -58,40 +52,7 @@ module.exports = function (app, passport) {
     });
 
     app.post("/api/parties/search/id", function (req, res) {
-        // var query = Party.find().populate('category');
-        // if(req.body.markers)
-        //   query = query.where('_id').in(req.body.markers);
-
-        // if( req.body.keyword ) {
-        //     var titleRegex = new RegExp(req.body.keyword, 'i');
-        //     query = query.where('title').equals(titleRegex);
-        // }
-        // query = query.exec(function (err, parties) {
-        //     res.render('frontend/parties/api_parties', {
-        //         parties: parties
-        //     });
-        // });
-        var conditions = {};
-        if( req.body.keyword !== "" ) {
-            var titleRegex = new RegExp(req.body.keyword, 'i');
-            conditions["title"] = titleRegex;
-        }
-        // if(req.body.markers)
-        //   query = query.where('_id').in(req.body.markers);
-
-        // if( req.body.min-price ) {
-        //      query = query.where('price').lt(req.body.min-price);
-        // }
-
-        // if( req.body.category ) {
-            // query = Party.where('category').equals(req.body.category);
-        // }
-        // if( req.body.min-price !== "" ) {
-        // }
-        // query.exec( function (err, parties) {
-        //     res.json(parties);
-        // });
-        var query = Party.find().populate('category').exec(function (err, parties) {
+        var query = Party.find().where('_id').in(req.body.markers).populate('category').exec(function (err, parties) {
             res.render('frontend/parties/api_parties', {
                 parties: parties
             });
@@ -105,19 +66,35 @@ module.exports = function (app, passport) {
             conditions["title"] = titleRegex;
         }
 
-        // if( req.body.min-price ) {
-        //      query = query.where('price').lt(req.body.min-price);
+        if( req.body.category && req.body.category != 0 ) {
+            conditions["category"] = req.body.category
+        }
+
+        if( req.body.price && req.body.price != 0 ) {
+            conditions["price"] = { $lte: req.body.price }
+        }
+
+        Party.find(conditions).populate('category').exec(function (err, parties) {
+            res.json(parties);
+        });
+    });
+
+    app.get("/api/parties", function (req, res) {
+        var conditions = {};
+        if( req.body.keyword !== "" ) {
+            var titleRegex = new RegExp(req.body.keyword, 'i');
+            conditions["title"] = titleRegex;
+        }
+
+        if( req.body.category ) {
+            conditions["category"] = req.body.category
+        }
+
+        // if( req.body.price ) {
+        //     conditions["price"] = { $lt: req.body.price }
         // }
 
-        // if( req.body.category ) {
-            // query = Party.where('category').equals(req.body.category);
-        // }
-        // if( req.body.min-price !== "" ) {
-        // }
-        // query.exec( function (err, parties) {
-        //     res.json(parties);
-        // });
-        Party.find().populate('category').exec(function (err, parties) {
+        Party.find(conditions).populate('category').exec(function (err, parties) {
             res.json(parties);
         });
     });
@@ -498,7 +475,7 @@ app.post('/parties/:id/checkout', isLoggedIn, function (req, res) {
     //END PAYMENT
 
     app.get("/reservations", isLoggedIn , function (req, res) {
-        Reservation.find({ user: req.user.id }).populate({ 
+        Reservation.find({  }).populate({ 
            path: 'party',
             populate: {
                 path: 'category',
@@ -511,23 +488,31 @@ app.post('/parties/:id/checkout', isLoggedIn, function (req, res) {
         });
      })
 
-    app.get('/reservations/:id/chat', isLoggedIn, function(req,res){
-        Reservation.findOne().exec(function (err, reservation) {
-            if(req.user.id == reservation.user){
+    app.get('/reservations/:id/chat', isLoggedIn, function(req, res){
+        Reservation.findOne({_id: req.params.id}).populate('user').populate({ 
+               path: 'party',
+                populate: {
+                    path: 'user_id',
+                    model: 'users'
+                } 
+             }).exec(function (err, reservation) {
+        
+            if(req.user.id == reservation.user.id){
                 var other_user = reservation.party.user_id;
             }
             else{
-                var other_user = req.user;
+                var other_user = reservation.user;
             }
-            res.render('frontend/reservations/chat', {
-                reservation: reservation,
-                other_user: other_user,
-                id: req.params.id
+            Chat.find({ $or:[ {'sender':req.user.id}, {'receiver':req.user.id} ]}).populate('sender').populate('receiver').exec(function (err, chats) {
+                res.render('frontend/reservations/chat', {
+                    reservation: reservation,
+                    chats: chats,
+                    other_user: other_user,
+                    id: req.params.id
+                });
             });
         });
      });
-
-    
 
      //ADMIN
 
@@ -1086,5 +1071,12 @@ app.post('/parties/:id/checkout', isLoggedIn, function (req, res) {
             })
         }
     })
+
+    app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('frontend/error', {
+            error: err
+        });
+    });
 
 }

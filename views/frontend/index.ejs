@@ -59,7 +59,7 @@
                                     <!--end form-group-->
                                     <div class="form-group">
                                         <select class="form-control selectpicker" name="city">
-                                            <option value="">Location</option>
+                                            <option value="0">All Locations</option>
                                             <option value="1">New York</option>
                                             <option value="2">Washington</option>
                                             <option value="3">London</option>
@@ -69,6 +69,7 @@
                                     <!--end form-group-->
                                     <div class="form-group">
                                         <select class="form-control selectpicker" name="category">
+                                            <option value="0">All Categories</option>
                                             <% categories.forEach(function(category) { %>
                                             <option value="<%= category.id %>"><%= category.name %></option>
                                             <% }); %>
@@ -76,7 +77,7 @@
                                     </div>
                                     <!--end form-group-->
                                     <div class="form-group">
-                                        <input type="text" class="form-control" name="min-price" placeholder="Minimal Price">
+                                        <input type="text" class="form-control" name="price" placeholder="Minimal Price">
                                     </div>
                                     <!--end form-group-->
                                     <div class="form-group">

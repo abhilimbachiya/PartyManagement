@@ -27,7 +27,7 @@
 
 		<!-- These elements are displayed as white info cards in the middle of the screen -->
 
-		<div class="connected">
+		<!-- <div class="connected">
 
 			<div class="infoConnected">
 				<h2><span class="nickname-left"></span></h2>
@@ -41,9 +41,9 @@
 
 			</div>
 
-		</div>
+		</div> -->
 
-		<div class="personinside">
+		<!-- <div class="personinside">
 
 			<img src="../img/unnamed.jpg" id="ownerImage" />
 
@@ -59,11 +59,11 @@
 
 			</div>
 
-		</div>
+		</div> -->
 
 		<div class="invite-textfield">
 
-			<h2>Oops, <%= other_user.local.name %> is no one online in this chat!</h2>
+			<h2 class="text-danger"><%= other_user.local.name %> is not online!</h2>
 
 		</div>
 
@@ -85,11 +85,12 @@
 
 		<div class="nomessages">
 
-			<img src="../img/unnamed.jpg" id="noMessagesImage" />
+			<img src="<%= other_user.getAvatarUrl() %>" id="noMessagesImage" />
 
 			<div class="info">
-				<h2>You are chatting with <span class="nickname-chat"></span>.</h2>
-				<h5>Send them a message from the form below!</h5>
+				<h2><span><%= other_user.local.name %></span></h2>
+				<h5 class="online" style="display: none">Online</h5>
+				<h5 class="offline" style="display: none">Offline</h5>
 			</div>
 
 		</div>
@@ -97,7 +98,29 @@
 		<div class="chatscreen">
 
 			<ul class="chats">
-				<!-- The chat messages will go here -->
+				<% chats.forEach(function(chat) { %>
+				
+					<% if(chat.sender.id == user.id) { %>
+					<li class="me">
+						<div class="image">
+							<img src=<%= chat.sender.getAvatarUrl() %> />
+							<b><%= chat.sender.local.name %></b>
+							<i class="timesent" data-time="<%= chat.createdAt %>"></i>
+						</div>
+						<p><%= chat.message %></p>
+					</li>
+					<% }else{ %>
+					<li class="you">
+						<div class="image">
+							<img src=<%= chat.sender.getAvatarUrl() %> />
+							<b><%= chat.sender.local.name %></b>
+							<i class="timesent" data-time="<%= chat.createdAt %>"></i>
+						</div>
+						<p><%= chat.message %></p>
+					</li>
+					<% } %>
+
+				<% }); %>
 			</ul>
 
 		</div>
@@ -124,7 +147,7 @@
 		// This file is executed in the browser, when people visit /chat/<random id>
 
 $(function(){
-
+	scrollToBottom();
 	// getting the id of the room from the url
 		var id = "<%= id %>";
 
@@ -138,9 +161,11 @@ $(function(){
 		friend = "";
 
 	// cache some jQuery objects
-	// var section = $(".section"),
-		// footer = $("footer"),
+	var section = $(".section"),
+		footer = $("footer"),
 		onConnect = $(".connected"),
+		offline = $(".offline"),
+		online = $(".online"),
 	inviteSomebody = $(".invite-textfield"),
 		personInside = $(".personinside"),
 		chatScreen = $(".chatscreen"),
@@ -160,6 +185,7 @@ $(function(){
 		textarea = $("#message"),
 		messageTimeSent = $(".timesent"),
 		chats = $(".chats");
+console.log('<%= other_user.local.name %>');
 
 	// these variables hold images
 	var ownerImage = $("#ownerImage"),
@@ -169,7 +195,6 @@ $(function(){
 
 	// on connection to server get the id of person's room
 	socket.on('connect', function(){
-
 		socket.emit('load', id);
 	});
 
@@ -207,8 +232,10 @@ $(function(){
 	socket.on('startChat', function(data){
 		console.log(data);
 		if(data.boolean && data.id == id) {
-
-			chats.empty();
+			offline.fadeOut(1200, function(){
+				online.fadeIn(1200);
+			});
+			// chats.empty();
 
 			if(name === data.users[0]) {
 
@@ -228,7 +255,6 @@ $(function(){
 		if(data.boolean && id==data.room){
 
 			showMessage("somebodyLeft", data);
-			chats.empty();
 		}
 
 	});
@@ -273,9 +299,8 @@ $(function(){
 		if(textarea.val().trim().length) {
 			createChatMessage(textarea.val(), name, img, moment());
 			scrollToBottom();
-
 			// Send the message to the other person in the chat
-			socket.emit('msg', {msg: textarea.val(), user: name, img: img});
+			socket.emit('msg', {msg: textarea.val(), reservation_id: "<%= reservation.id %>", sender_id: "<%= user.id %>", sender_name: "<%= user.local.name %>", receiver_id: "<%= other_user.id %>", receiver_name: "<%= other_user.local.name %>", img: img});
 
 		}
 		// Empty the textarea
@@ -343,7 +368,10 @@ $(function(){
 			// section.children().css('display', 'none');
 			// onConnect.fadeIn(1200);
 
-			inviteSomebody.fadeIn(1200);
+			// inviteSomebody.fadeIn(1200);
+			online.fadeOut(600, function(){
+				offline.fadeIn(600);
+			});
 		}
 
 		else if(status === "inviteSomebody"){
@@ -351,42 +379,54 @@ $(function(){
 			// Set the invite link content
 			$("#link").text(window.location.href);
 
-			onConnect.fadeOut(1200, function(){
-				inviteSomebody.fadeIn(1200);
+			online.fadeOut(600, function(){
+				offline.fadeIn(600);
 			});
 		}
 
 		else if(status === "personinchat"){
 
 			onConnect.css("display", "none");
-			personInside.fadeIn(1200);
+			personInside.fadeIn(600);
 
 			chatNickname.text(data.user);
 			ownerImage.attr("src",data.avatar);
-		}
 
-		else if(status === "youStartedChatWithNoMessages") {
-			left.fadeOut(1200, function() {
-				inviteSomebody.fadeOut(1200,function(){
-					noMessages.fadeIn(1200);
-					footer.fadeIn(1200);
-				});
+			online.fadeOut(600, function(){
+				offline.fadeIn(600);
 			});
-
-			friend = data.users[1];
-			noMessagesImage.attr("src",data.avatars[1]);
 		}
 
-		else if(status === "heStartedChatWithNoMessages") {
+		// else if(status === "youStartedChatWithNoMessages") {
+		// 	left.fadeOut(1200, function() {
+		// 		inviteSomebody.fadeOut(1200,function(){
+		// 			noMessages.fadeIn(1200);
+		// 			footer.fadeIn(1200);
+		// 		});
+		// 	});
 
-			personInside.fadeOut(1200,function(){
-				noMessages.fadeIn(1200);
-				footer.fadeIn(1200);
-			});
+		// 	offline.fadeOut(1200, function(){
+		// 		online.fadeIn(1200);
+		// 	});
 
-			friend = data.users[0];
-			noMessagesImage.attr("src",data.avatars[0]);
-		}
+		// 	friend = data.users[1];
+		// 	noMessagesImage.attr("src",data.avatars[1]);
+		// }
+
+		// else if(status === "heStartedChatWithNoMessages") {
+
+		// 	personInside.fadeOut(1200,function(){
+		// 		noMessages.fadeIn(1200);
+		// 		footer.fadeIn(1200);
+		// 	});
+
+		// 	offline.fadeOut(1200, function(){
+		// 		online.fadeIn(1200);
+		// 	});
+
+		// 	friend = data.users[0];
+		// 	noMessagesImage.attr("src",data.avatars[0]);
+		// }
 
 		else if(status === "chatStarted"){
 
@@ -395,13 +435,15 @@ $(function(){
 		}
 
 		else if(status === "somebodyLeft"){
+			online.fadeOut(600, function(){
+				offline.fadeIn(600);
+			});
+			// leftImage.attr("src",data.avatar);
+			// leftNickname.text(data.user);
 
-			leftImage.attr("src",data.avatar);
-			leftNickname.text(data.user);
-
-			section.children().css('display','none');
-			footer.css('display', 'none');
-			left.fadeIn(1200);
+			// section.children().css('display','none');
+			// footer.css('display', 'none');
+			// left.fadeIn(1200);
 		}
 
 		else if(status === "tooManyPeople") {

@@ -60,8 +60,8 @@
                                             <div class="map height-200px shadow" id="map-submit"></div>
                                         <!--end map-->
                                         <div class="form-group hidden">
-                                            <input type="text" class="form-control" id="latitude" name="latitude" hidden="<%= party.latitude %>">
-                                            <input type="text" class="form-control" id="longitude" name="longitude" hidden="<%= party.longitude %>">
+                                            <input type="hidden" class="form-control" id="latitude" name="latitude" value="<%= party.latitude %>">
+                                            <input type="hidden" class="form-control" id="longitude" name="longitude" value="<%= party.longitude %>">
                                         </div>
                                         <p class="note">Enter the exact address or drag the map marker to position</p>
                                     </div>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+    <title>Home</title>
+    <%- include('includes/head'); %>
+</head>
+
+<body class="nav-btn-only homepage">
+    <div class="page-wrapper">
+        <%- include('includes/header'); %>
+        <!--end page-header-->
+
+        <div id="page-content">
+            <section class="page-title center error">
+                <h2>Whoops something went wrong</h2>
+                <p>Please try again</p>
+                <% if(error) { %>
+                <div class="container">
+                    <pre class="text-danger"><%= error %></pre>
+                </div>
+                <% } %>
+            </section>
+        </div>
+    </div>
+
+    <%- include('includes/foot'); %>
+
+    <script>
+        var optimizedDatabaseLoading = 0;
+        var _latitude = 40.7127837;
+        var _longitude = -74.00594130000002;
+        var element = "map-homepage";
+    var markerTarget = "sidebar"; // use "sidebar", "infobox" or "modal" - defines the action after click on marker
+    var sidebarResultTarget = "sidebar"; // use "sidebar", "modal" or "new_page" - defines the action after click on marker
+    var showMarkerLabels = false; // next to every marker will be a bubble with title
+    var mapDefaultZoom = 14; // default zoom
+    heroMap(_latitude,_longitude, element, markerTarget, sidebarResultTarget, showMarkerLabels, mapDefaultZoom);
+</script>
+
+</body>
+

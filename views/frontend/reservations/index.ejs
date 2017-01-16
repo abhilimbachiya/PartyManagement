@@ -18,6 +18,7 @@
             </section>
             <!--end page-title-->
             <section>
+                <% if (reservations.length > 0) { %>
                 <div class="my-items table-responsive">
                     <table class="table">
                         <thead>
@@ -54,7 +55,7 @@
                                 </div>
                                 <!--end info-->
                             </td>
-                            <td><a href="/reservations/<%= reservation.party.id %>/chat">Chat</a></td>
+                            <td><a href="/reservations/<%= reservation.id %>/chat">Chat</a></td>
                             <!-- <td><div class="featured yes"><i class="fa fa-check"></i><aside></aside></div></td> -->
                             <td><%= reservation.transaction_reference %></td>
                             <td class="reviews">45</td>
@@ -65,6 +66,9 @@
                         </tbody>
                     </table>
                 </div>
+                <% } else { %>
+                        <p>You have not boooked any events. Book one <a href="/">here</a>.</p>
+                        <% } %>
                 <!--end my-items-->
             </section>
         <!--end container-->

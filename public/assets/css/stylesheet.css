@@ -402,30 +402,27 @@ body {
 
 
 .nomessages {
-	text-align:center;
 	display: block;
 	margin:0px auto;
 	width: 750px;
-	height: 300px;
+	padding: 20px;
 	background-color: #ffffff;
 	border-radius: 3px;
 	box-shadow:0px 3px 3px #e3e4e6;
 	color: #637277;
-	margin-bottom: 400px;
+	margin-bottom: 20px;
 }
 .nomessages h2 {
-	padding-top: 50px;
+	padding-top: 10px;
 	overflow: hidden;
 	padding-bottom: 6px;
 }
 .nomessages h5 {
 	font-weight: normal;
-	margin-bottom: 100px;
 }
 
 #noMessagesImage {
 	float: left;
-	margin: 90px 0 0 140px;
 	width: 100px;
 	height: 100px;
 	border-radius: 50%;
@@ -439,10 +436,8 @@ body {
 	border-radius: 50%;
 }
 .info {
+	padding-left: 20px;
 	text-align: left;
-	float: right;
-	margin: 65px 60px 0 0;
-	width: 405px;
 	overflow: hidden;
 }
 .nickname-chat {
@@ -629,16 +624,16 @@ footer {
 	display:none;
 }
 
-.nomessages{
+/*.nomessages{
 	display:none;
-}
+}*/
 
 footer {
 	display:none;
 }
 
 .chatscreen{
-	display:none;
+	/*display:none;*/
 	width:700px;
 	margin: 0 auto 200px;
 	overflow:hidden;

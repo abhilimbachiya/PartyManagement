@@ -18,6 +18,7 @@
             </section>
             <!--end page-title-->
             <section>
+                <% if (parties.length > 0) { %>
                 <div class="my-items table-responsive">
                     <table class="table">
                         <thead>
@@ -75,12 +76,17 @@
                         </tr>
                         <!--end my-item-->
                         <% }); %>
-                        
+                    
                         </tbody>
                     </table>
+                    
                 </div>
+                <% } else { %>
+                <p>You have not created any events. Create one <a href="/parties/create">here</a>.</p>
+                <% } %>
                 <!--end my-items-->
             </section>
+            <% if (parties.length > 0) { %>
             <section>
                 <div class="center">
                     <nav aria-label="Page navigation">
@@ -104,6 +110,7 @@
                     </nav>
                 </div>
             </section>
+            <% } %>
         </div>
         <!--end container-->
     </div>

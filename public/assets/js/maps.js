@@ -167,7 +167,7 @@ console.log(markers);
                     a = i;
                     var geocoder = new google.maps.Geocoder();
                     var geoOptions = {
-                        address: markers[i]["address"]
+                        address: markers[i]["location"]
                     };
                     geocoder.geocode(geoOptions, geocodeCallback(markerContent));
 

@@ -1,4 +1,5 @@
 var gravatar = require('gravatar');
+var Chat = require('../app/models/chat');
 
 module.exports = function (io) {
 
@@ -101,7 +102,14 @@ module.exports = function (io) {
         socket.on('msg', function(data){
 
             // When the server receives a message, it sends it to the other person in the room.
-            socket.broadcast.to(socket.room).emit('receive', {msg: data.msg, user: data.user, img: data.img});
+            var chatLog = new Chat();
+            chatLog.sender = data.sender_id;
+            chatLog.receiver = data.receiver_id;
+            chatLog.message = data.msg;
+            chatLog.reservation = data.reservation_id;
+            chatLog.save();
+
+            socket.broadcast.to(socket.room).emit('receive', {msg: data.msg, user: data.sender_name, img: data.img});
         });
     });
 
