@@ -84,7 +84,7 @@
                     <ul class="navigation">
                         <li class="has-child">
                             <div class="image"><div class="bg-transfer"><img src="<%= user.getAvatarUrl() %>" alt=""></div></div>
-                            <a href="#" class="invisible-on-mobile"><%= user.local.name %></a>
+                            <a href="/score_history" class="invisible-on-mobile"><%= user.local.name %> (<%= user.calulateScore(user_scores) %>)</a>
                             <div class="wrapper">
                                 <div class="nav-wrapper">
                                     <ul>

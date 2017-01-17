@@ -2,6 +2,7 @@
 var Party = require('../app/models/party');
 var Review = require('../app/models/review');
 var Reservation = require('../app/models/reservation');
+var UserScore = require('../app/models/user_score');
 var Chat = require('../app/models/chat');
 var Admin = require('../app/models/admins');
 var Category = require("../app/models/category")
@@ -18,7 +19,17 @@ module.exports = function (app, passport) {
 
     app.use(function(req, res, next) {
         res.locals.user = req.user;
-        next();
+
+        if(req.isAuthenticated()){
+            UserScore.find({ user: req.user.id }, function (err, user_scores) {
+                res.locals.user_scores = user_scores;
+                next();
+            });
+        }
+        else{
+            next();
+        }
+
     });
 
     function isLoggedIn(req, res, next) {
@@ -204,6 +215,10 @@ module.exports = function (app, passport) {
         }
     })
 
+    app.get("/score_history", isLoggedIn, function (req, res) {
+        res.render('frontend/score_history');
+    });
+
     var userAvatarStorage = multer.diskStorage({
         destination: function (req, file, cb) {
             cb(null, './public/uploads/users/avatars/')
@@ -283,10 +298,14 @@ module.exports = function (app, passport) {
         party.youtube_url = req.body.youtube_url;
         party.pinterest_url = req.body.pinterest_url;
         party.save(function (err) {
-            if (!err)
+            var score_history = new UserScore();
+            score_history.user = req.user.id;
+            score_history.type = 'party_create';
+            score_history.score = 20;
+            
+            score_history.save(function (err) {
                 res.redirect('/parties');
-            else
-                throw err;
+            });
         });
     })
 
@@ -361,8 +380,17 @@ module.exports = function (app, passport) {
             review.title = req.body.title;
             review.content = req.body.content;
             review.rating = req.body.score_rating;
-            review.save();
-            res.redirect('/parties/' + party.id);               
+            
+            review.save(function (err) {
+                var score_history = new UserScore();
+                score_history.user = req.user.id;
+                score_history.type = 'review_create';
+                score_history.score = 2;
+                
+                score_history.save(function (err) {
+                    res.redirect('/parties/' + party.id);               
+                });
+            });
         });
     });
 
@@ -442,27 +470,36 @@ app.get('/parties/:id/checkouts/:id', isLoggedIn, function (req, res) {
 });
 
 app.post('/parties/:id/checkout', isLoggedIn, function (req, res) {
-    Party.findOne({ _id: req.params.id }).exec(function (err, party) {
-      var transactionErrors;
-          var amount = party.price; // In production you should not take amounts directly from clients
-          var nonce = req.body.payment_method_nonce;
+    Party.findOne({ _id: req.params.id }).populate('user_id').exec(function (err, party) {
+        var transactionErrors;
+        var amount = party.price;
+        var nonce = req.body.payment_method_nonce;
 
-          gateway.transaction.sale({
+        gateway.transaction.sale({
             amount: amount,
             paymentMethodNonce: nonce,
             options: {
-              submitForSettlement: true
-          }
+                submitForSettlement: true
+            }
       }, function (err, result) {
         if (result.success || result.transaction) {
             var partyReservation = new Reservation();
             partyReservation.user = req.user.id;
+            partyReservation.party_admin = party.user_id.id;
             partyReservation.party = party.id;
             partyReservation.transaction_reference = result.transaction.id;
             partyReservation.price = party.price;
-            partyReservation.save();
+            partyReservation.save(function (err) {
 
-            res.redirect('/reservations');
+                var score_history = new UserScore();
+                score_history.user = req.user.id;
+                score_history.type = 'reservation_create';
+                score_history.score = 10;
+                
+                score_history.save(function (err) {
+                    res.redirect('/reservations');
+                });
+            });
         } else {
           transactionErrors = result.errors.deepErrors();
           req.flash('error', {msg: formatErrors(transactionErrors)});
@@ -475,7 +512,7 @@ app.post('/parties/:id/checkout', isLoggedIn, function (req, res) {
     //END PAYMENT
 
     app.get("/reservations", isLoggedIn , function (req, res) {
-        Reservation.find({  }).populate({ 
+        Reservation.find({ $or:[ {'user':req.user.id}, {'party_admin':req.user.id} ] }).populate({
            path: 'party',
             populate: {
                 path: 'category',
@@ -489,21 +526,14 @@ app.post('/parties/:id/checkout', isLoggedIn, function (req, res) {
      })
 
     app.get('/reservations/:id/chat', isLoggedIn, function(req, res){
-        Reservation.findOne({_id: req.params.id}).populate('user').populate({ 
-               path: 'party',
-                populate: {
-                    path: 'user_id',
-                    model: 'users'
-                } 
-             }).exec(function (err, reservation) {
-        
+        Reservation.findOne({ _id: req.params.id, $or:[ {'user':req.user.id}, {'party_admin':req.user.id} ] }).populate('user').populate('party_admin').exec(function (err, reservation) {
             if(req.user.id == reservation.user.id){
-                var other_user = reservation.party.user_id;
+                var other_user = reservation.party_admin;
             }
             else{
                 var other_user = reservation.user;
             }
-            Chat.find({ $or:[ {'sender':req.user.id}, {'receiver':req.user.id} ]}).populate('sender').populate('receiver').exec(function (err, chats) {
+            Chat.find({ $or:[ {'sender':req.user.id}, {'receiver':req.user.id} ] }).populate('sender').populate('receiver').exec(function (err, chats) {
                 res.render('frontend/reservations/chat', {
                     reservation: reservation,
                     chats: chats,

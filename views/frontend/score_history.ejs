@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+    <title>My Score History</title>
+    <%- include('includes/head'); %>
+</head>
+
+<body>
+
+<%- include('includes/header'); %>
+
+<div id="page-content">
+        <div class="container">
+            <section class="page-title">
+                <h1>My Score History</h1>
+            </section>
+            <section>
+                <% if (user_scores.length > 0) { %>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Activity</th>
+                            <th>Score</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <% user_scores.forEach(function(record) { %>
+                        <tr>
+                            <td><%= record.getFormattedType() %></td>
+                            <td><%= record.score %></td>
+                        </tr>
+                        <% }); %>
+                        <tr>
+                            <td><strong>Total</strong></td>
+                            <td><strong><%= user.calulateScore(user_scores) %></strong></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            
+                <% } else { %>
+                <p>You have not earned any points. <a href="/parties/create">Create</a>, <a href="/">Book</a> or review parties.</p>
+                <% } %>
+            </section>
+    </div>
+
+<%- include('includes/foot'); %>
+
+</body>
+

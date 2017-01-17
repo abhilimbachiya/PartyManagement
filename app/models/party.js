@@ -26,7 +26,7 @@ var partySchema = mongoose.Schema({
     duration: Number,
 });
 
-partySchema.methods.getImageUrl = function getImageUrl ()
+partySchema.methods.getImageUrl = function()
 {
     if(this.images.length)
         return '/' + this.images[0].destination + '/' + this.images[0].filename;

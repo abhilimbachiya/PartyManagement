@@ -2,6 +2,7 @@
 var bcrypt = require('bcrypt-nodejs');
 
 var userSchema = mongoose.Schema({
+    scores : [{ type: String, ref: 'user_scores' }],
     local: {
         email: String,
         password: String,
@@ -43,6 +44,15 @@ userSchema.methods.getAvatarUrl = function getImageUrl ()
         return '/' + this.local.avatar.destination + '/' + this.local.avatar.filename;
     
     return '/assets/images/placeholders/user.jpg';
+};
+
+userSchema.methods.calulateScore = function calulateScore (scores)
+{
+    var total_score = 0;
+    scores.forEach(function(record) {
+        total_score += record.score;
+    });
+    return total_score;
 };
 
 module.exports = mongoose.model('users', userSchema);
