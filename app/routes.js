@@ -14,12 +14,17 @@ var express = require('express');
 var path = require('path'); 
 var crypto = require('crypto');
 var mime = require('mime');
+var expressValidator  = require('express-validator'); 
 
 module.exports = function (app, passport) {
 
+    app.use(expressValidator([]));
+
     app.use(function(req, res, next) {
         res.locals.user = req.user;
-
+        res.locals.alert = req.flash('alert');
+        res.locals.errors = req.flash('errors');
+        
         if(req.isAuthenticated()){
             UserScore.find({ user: req.user.id }, function (err, user_scores) {
                 res.locals.user_scores = user_scores;

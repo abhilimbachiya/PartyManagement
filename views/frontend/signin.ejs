@@ -21,6 +21,12 @@
                     </section>
 
                     <section>
+                        <% if(alert.length > 0) { %>
+                        <div class="alert alert-danger">
+                        <%=  alert %>
+                        </div>
+                        <% } %>
+
                         <form class="form inputs-underline" action="/signin" method="POST">
                             <div class="form-group">
                                 <label for="email">Email</label>

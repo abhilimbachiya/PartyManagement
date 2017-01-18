@@ -19,8 +19,10 @@
                         <section class="section-title">
                             <h2>Sign Up</h2>
                         </section>
-                        <% if (message.length > 0) { %>
-                        <div class="alert alert-danger"><%= message %></div>
+                       <% if(alert.length > 0) { %>
+                        <div class="alert alert-danger">
+                        <%=  alert %>
+                        </div>
                         <% } %>
                         <form class="form inputs-underline" action="/signup" method="POST">
                             <div class="form-group">

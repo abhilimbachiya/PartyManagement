@@ -113,3 +113,12 @@
     </header>
     <ul class="breadcrumb">
     </ul>
+    <% if(errors.length > 0) { %>
+    <div class="col-md-4 col-sm-4 col-md-offset-4 col-sm-offset-4">
+        <div class="alert alert-danger">
+            <% errors.forEach(function(error) { %>
+            <%=  error %>
+            <% }); %>
+        </div>
+    </div>
+    <% } %>
