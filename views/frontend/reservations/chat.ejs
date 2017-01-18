@@ -1,11 +1,5 @@
 <!DOCTYPE html>
 
-<!--
-	This file is rendered by express.js, when the rurl /chat/123456 is visited in a browser.
-	It includes jQuery, socket.io.js (it is automatically served by the socket.io library), 
-	and a few more JavaScript files that you should check out.
--->
-
 <html>
 
 <head>
@@ -13,8 +7,7 @@
 	<title>Chat</title>
 
 	<link type="text/css" rel="stylesheet" href="/assets/css/stylesheet.css" />
-	<link href="http://fonts.googleapis.com/css?family=Open+Sans Condensed:300italic,300,700" rel="stylesheet" type="text/css">
-<%- include('../includes/head'); %>
+	<%- include('../includes/head'); %>
 
 
 </head>
@@ -105,7 +98,7 @@
 						<div class="image">
 							<img src=<%= chat.sender.getAvatarUrl() %> />
 							<b><%= chat.sender.local.name %></b>
-							<i class="timesent" data-time="<%= chat.createdAt %>"></i>
+							<i class="timesent" data-time="<%= chat.createdAt.toISOString() %>"><%= chat.createdAt.toISOString() %></i>
 						</div>
 						<p><%= chat.message %></p>
 					</li>
@@ -114,7 +107,7 @@
 						<div class="image">
 							<img src=<%= chat.sender.getAvatarUrl() %> />
 							<b><%= chat.sender.local.name %></b>
-							<i class="timesent" data-time="<%= chat.createdAt %>"></i>
+							<i class="timesent" data-time="<%= chat.createdAt.toISOString() %>"><%= chat.createdAt.toISOString() %></i>
 						</div>
 						<p><%= chat.message %></p>
 					</li>
@@ -166,7 +159,7 @@ $(function(){
 		onConnect = $(".connected"),
 		offline = $(".offline"),
 		online = $(".online"),
-	inviteSomebody = $(".invite-textfield"),
+		inviteSomebody = $(".invite-textfield"),
 		personInside = $(".personinside"),
 		chatScreen = $(".chatscreen"),
 		left = $(".left"),
@@ -185,7 +178,6 @@ $(function(){
 		textarea = $("#message"),
 		messageTimeSent = $(".timesent"),
 		chats = $(".chats");
-console.log('<%= other_user.local.name %>');
 
 	// these variables hold images
 	var ownerImage = $("#ownerImage"),
@@ -230,7 +222,6 @@ console.log('<%= other_user.local.name %>');
 	// Other useful 
 
 	socket.on('startChat', function(data){
-		console.log(data);
 		if(data.boolean && data.id == id) {
 			offline.fadeOut(1200, function(){
 				online.fadeIn(1200);
@@ -308,13 +299,17 @@ console.log('<%= other_user.local.name %>');
 	});
 
 	// Update the relative time stamps on the chat messages every minute
-
-	setInterval(function(){
-
+	function updateTimeStamps(){
 		messageTimeSent.each(function(){
 			var each = moment($(this).data('time'));
-			$(this).text(each.fromNow());
+			$(this).text(moment($(this).data('time')).format('lll') + ' (' + each.fromNow() + ')');
 		});
+	}
+
+	updateTimeStamps();
+	setInterval(function(){
+
+		updateTimeStamps();
 
 	},60000);
 
@@ -348,7 +343,7 @@ console.log('<%= other_user.local.name %>');
 		chats.append(li);
 
 		messageTimeSent = $(".timesent");
-		messageTimeSent.last().text(now.fromNow());
+		updateTimeStamps();
 	}
 
 	function scrollToBottom(){
