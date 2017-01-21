@@ -64,6 +64,7 @@
                     <section>
                         <h2>Reviews</h2>
                         
+                        <% if (reviews.length > 0) { %>
                         <% reviews.forEach(function(review) { %>
                         <div class="review">
                             <div class="image">
@@ -84,6 +85,10 @@
                             </div>
                         </div>
                         <% }); %>
+
+                        <% } else { %>
+                        <p>There are no reviews posted currently.</p>
+                        <% } %>
                         <!--end review-->
                         
                     </section>
