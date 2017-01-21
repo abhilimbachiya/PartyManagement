@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var reviewSchema = mongoose.Schema({
     user : { type: String, ref: 'users' },
-    party : { type: String, ref: 'parties' },
+    party_user : { type: String, ref: 'users' },
     title: String,
     content: String,
     rating: Number,

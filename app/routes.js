@@ -381,7 +381,7 @@ module.exports = function (app, passport) {
         Party.findOne({ _id: req.params.id }, function (err, party) {
             var review = new Review();
             review.user = req.user.id;
-            review.party = party.id;
+            review.party_user = party.user_id;
             review.title = req.body.title;
             review.content = req.body.content;
             review.rating = req.body.score_rating;
@@ -401,7 +401,7 @@ module.exports = function (app, passport) {
 
     app.get("/parties/:id", function (req, res) {
         Party.findOne({ _id: req.params.id }).populate('category').exec(function (err, party) {
-            Review.find({ party: req.params.id }).populate('user').exec(function (err, reviews) {
+            Review.find({ party_user: party.user_id }).populate('user').exec(function (err, reviews) {
                 res.render('frontend/parties/show', {
                     party: party,
                     reviews: reviews
